@@ -1,6 +1,9 @@
+// src/components/Header/Header.jsx
+
 import React, { useState } from 'react';
 import './Header.css';
-
+import Logo from '../../assets/Logo.png'; 
+// ...
 const Header = () => {
   // controla la visibilidad del buscador
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -19,10 +22,10 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
-      {/* Logo */}
+      <header className="header">
+      {/* Reemplazamos el div del logo con una etiqueta img */}
       <div className="logo">
-        <span>La Celestina</span>
+        <img src={Logo} alt="La Celestina - Delicias y más" className="logo-img" />
       </div>
 
       {/* agregar Íconos de redes sociales */}

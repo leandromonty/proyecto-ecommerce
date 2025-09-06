@@ -1,10 +1,10 @@
+// src/components/Nav/Nav.jsx
 import React from 'react';
 import './Nav.css';
 
 const Nav = () => {
   return (
-    <nav className="nav-sticky">
-      {/* Aquí pondremos los links de navegación, como Home, Contacto, etc. */}
+    <nav className="nav-sticky nav-desktop">
       <ul>
         <li>Home</li>
         <li>Destacado</li>

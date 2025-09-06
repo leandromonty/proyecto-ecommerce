@@ -1,11 +1,18 @@
+/* src/components/Header/Header.css */
+
 /* Estilos para el Header */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #f8f8f8;
+  background-color: #e0f2f7;
   border-bottom: 1px solid #ccc;
+  color: #333;
+}
+
+.logo-img {
+  height: 50px;
 }
 
 /* Oculta el menú y el ícono de hamburguesa en pantallas de escritorio */

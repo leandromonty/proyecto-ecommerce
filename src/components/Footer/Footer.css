@@ -1,0 +1,78 @@
+/* src/components/Footer/Footer.css */
+
+/* Estilos para Web */
+.footer-web {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+.footer-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #555;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.footer-logo img {
+  height: 80px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 50px;
+}
+
+.footer-links h3, .footer-social h3 {
+  color: #e0f2f7; /* Color de acento */
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.social-icons span {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.footer-copyright {
+  text-align: center;
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+/* Media query para Celular */
+@media (max-width: 768px) {
+  .footer-web {
+    text-align: center;
+  }
+  
+  .footer-main {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .footer-logo {
+    margin-bottom: 20px;
+  }
+
+  .footer-links, .footer-social {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
