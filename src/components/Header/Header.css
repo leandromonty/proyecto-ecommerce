@@ -1,0 +1,61 @@
+/* Estilos para el Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Oculta el menú y el ícono de hamburguesa en pantallas de escritorio */
+.mobile-menu-icon,
+.mobile-nav {
+  display: none;
+}
+
+/* Oculta el buscador por defecto */
+.search-container {
+  display: flex;
+}
+
+/* Media query para pantallas más pequeñas (móviles) */
+@media (max-width: 768px) {
+  /* En móvil, oculta los íconos sociales y el buscador en línea del header */
+  .social-icons,
+  .search-container {
+    display: none;
+  }
+
+  /* Muestra el ícono de hamburguesa */
+  .mobile-menu-icon {
+    display: block;
+    cursor: pointer;
+  }
+
+  /* Estilos para el menú móvil cuando está activo */
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* Ajusta este valor si tu header tiene otra altura */
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+
+  .mobile-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .mobile-nav li {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
+}

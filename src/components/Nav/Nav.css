@@ -1,0 +1,23 @@
+/* src/components/Nav/Nav.css */
+.nav-sticky {
+  position: sticky;
+  top: 0; /* Esto hace que el elemento se pegue a la parte superior de la ventana del navegador */
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Asegura que el nav esté por encima de otros elementos */
+}
+
+.nav-sticky ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px; /* Puedes ajustar la altura a tu gusto */
+}
+
+.nav-sticky li {
+  padding: 0 1rem;
+}

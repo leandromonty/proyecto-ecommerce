@@ -1,0 +1,32 @@
+/* Estilos para la grilla en Web (5 productos por fila) */
+.product-grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Media query para Tablet (3 productos por fila) */
+@media (max-width: 1024px) {
+  .product-grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Media query para Celular (2 productos por fila) */
+@media (max-width: 600px) {
+  .product-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
