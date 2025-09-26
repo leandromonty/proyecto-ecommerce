@@ -1,10 +1,8 @@
 // src/components/ProductGrid/ProductGrid.jsx
 import React from 'react';
 import './ProductGrid.css';
-// Importamos los íconos necesarios para los botones
 import { FaCheck, FaHeart, FaRegHeart, FaShoppingCart } from 'react-icons/fa'; 
 
-// ProductGrid ahora solo recibe la lista de productos filtrada y los handlers
 const ProductGrid = ({ products, onToggleFavorite, onToggleCart }) => {
     
     const handleToggleFavorite = onToggleFavorite;
@@ -20,12 +18,12 @@ const ProductGrid = ({ products, onToggleFavorite, onToggleCart }) => {
                 products.map(product => (
                     <div key={product.id} className="product-card">
                         
-                        {/* Botón de Favoritos con Tilde/Corazón */}
+                        {/* Botón de Favoritos */}
                         <div 
                             className={`fav-icon ${product.isFavorite ? 'active' : ''}`}
                             onClick={() => handleToggleFavorite(product.id)}
                         >
-                            {/* Mostramos el corazón relleno si es favorito, sino el contorno */}
+                            { }
                             {product.isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
                         </div>
 

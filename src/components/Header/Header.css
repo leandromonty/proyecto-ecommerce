@@ -22,7 +22,6 @@
   gap: 15px; 
 }
 
-/* Estilo base para los íconos de acción */
 .user-icon, .mobile-menu-icon {
   font-size: 1.5rem;
   cursor: pointer;
@@ -32,20 +31,20 @@
 }
 
 .user-icon:hover {
-  color: #007bff; /* Color de acento al pasar el ratón */
+  color: #007bff; 
 }
 
-/* ------------------- BUSCADOR FIJO (Desktop) ------------------- */
+/* ------------------- BUSCADOR FIJO ------------------- */
 .search-container.fixed-search {
   display: flex;
   align-items: center;
-  margin: 0 20px; /* Espacio a los lados */
-  flex-grow: 1; /* Permite que ocupe el espacio central */
-  max-width: 400px; /* Limita el ancho en desktop */
+  margin: 0 20px; 
+  flex-grow: 1; 
+  max-width: 400px; 
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;
-  overflow: hidden; /* Asegura que el contenido quede dentro */
+  overflow: hidden; 
 }
 
 .search-container input {
@@ -57,7 +56,7 @@
 }
 
 .search-icon-fixed {
-  background-color: #007bff; /* Color de acento para el fondo del ícono */
+  background-color: #007bff; 
   color: white;
   padding: 10px 12px;
   cursor: pointer;
@@ -68,27 +67,25 @@
 }
 
 
-/* ------------------- MEDIA QUERIES (Móvil) ------------------- */
 @media (min-width: 769px) {
-  /* OCULTA EL MENÚ DE HAMBURGUESA EN DESKTOP */
+
   .mobile-menu-icon {
     display: none;
   }
 }
 
 @media (max-width: 768px) {
-  /* En móvil, ocultamos las redes sociales y el buscador fijo */
   .social-icons,
   .search-container.fixed-search {
     display: none;
   }
   
-  /* Muestra el ícono de hamburguesa */
+  /*Icono de hamburguesa */
   .mobile-menu-icon {
     display: block;
   }
 
-  /* Estilos para el menú móvil cuando está activo */
+  /* Estilos para el menú móvil */
   .mobile-nav {
     display: flex;
     flex-direction: column;

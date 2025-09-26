@@ -1,6 +1,5 @@
 /* src/components/Footer/Footer.css */
 
-/* Estilos para Web */
 .footer-web {
   background-color: #333;
   color: white;
@@ -27,7 +26,7 @@
 }
 
 .footer-links h3, .footer-social h3 {
-  color: #e0f2f7; /* Color de acento */
+  color: #e0f2f7; 
 }
 
 .footer-links ul {

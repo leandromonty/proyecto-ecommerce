@@ -3,9 +3,9 @@ import React from 'react';
 import './Nav.css';
 
 const CART_ICON = '🛒';
-const FAVORITES_ICON = '❤️'; // Nuevo: Ícono para favoritos
+const FAVORITES_ICON = '❤️'; 
 
-// Nav recibe ahora el conteo de favoritos
+
 const Nav = ({ cartItemCount, onToggleCart, favoriteItemCount }) => {
   return (
     <nav className="nav-sticky nav-desktop">

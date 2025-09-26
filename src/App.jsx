@@ -1,12 +1,12 @@
 // src/App.jsx
 
 import React, { useState, useMemo } from 'react';
-// Componentes de Estructura Principal (Rutas corregidas)
+// Componentes de Estructura Principal 
 import Header from './components/Header/Header';
 import Nav from './components/Nav/Nav';
 import Footer from './components/Footer/Footer';
 
-// Componentes de Contenido (Rutas corregidas)
+// Componentes de Contenido 
 import FeaturedSlider from './components/FeaturedSlider/FeaturedSlider';
 import FilterSidebar from './components/FilterSidebar/FilterSidebar';
 import ProductGrid from './components/ProductGrid/ProductGrid';
@@ -21,15 +21,15 @@ const initialProducts = Array.from({ length: 15 }, (_, i) => ({
     name: `Producto ${i + 1}`,
     image: `https://placehold.co/200?text=Producto+${i + 1}`,
     price: (i + 1) * 100, // Precio como número
-    category: ['Tartas', 'Budines', 'Muffins', 'Postres Fríos'][i % 4], // Añadimos categoría
-    conAzucar: i % 2 === 0, // 50% con azúcar
-    sinTacc: i % 3 === 0,    // 33% sin tacc
-    vegano: i % 5 === 0,     // 20% vegano
+    category: ['Tartas', 'Budines', 'Muffins', 'Postres Fríos'][i % 4],
+    conAzucar: i % 2 === 0, 
+    sinTacc: i % 3 === 0,    
+    vegano: i % 5 === 0,    
     isFavorite: false,
     isInCart: false,
 }));
 
-// Productos Destacados (usamos IDs altos para evitar colisiones con initialProducts)
+// Productos Destacados 
 const featuredProducts = [
     { id: 101, name: 'Tarta de Limón Clásica', image: 'https://placehold.co/300x200?text=Limon', price: 850, category: 'Tartas' },
     { id: 102, name: 'Budín de Naranja y Chocolate', image: 'https://placehold.co/300x200?text=Naranja', price: 620, category: 'Budines' },
@@ -38,28 +38,28 @@ const featuredProducts = [
 
 
 function App() {
-    // --- ESTADOS PRINCIPALES ---
+    
     const [products, setProducts] = useState(initialProducts);
     const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     
-    // ESTADO DE FILTROS Y BÚSQUEDA
+   
     const [filters, setFilters] = useState({
         category: 'Todos',
         conAzucar: false,
         sinTacc: false,
         vegano: false,
     });
-    const [searchTerm, setSearchTerm] = useState(''); // <--- NUEVO ESTADO DE BÚSQUEDA
+    const [searchTerm, setSearchTerm] = useState(''); 
 
-    // --- MANEJADORES DE ESTADO GENERAL ---
+  
 
-    // Maneja el cambio en el input de búsqueda
+    
     const handleSearchChange = (term) => {
         setSearchTerm(term);
     };
 
-    // Maneja el toggle de favorito/carrito en la grilla
+    
     const toggleItemState = (id, field) => {
         setProducts(prevProducts =>
             prevProducts.map(product =>
@@ -110,20 +110,19 @@ function App() {
                 price: priceString 
             }
         ]);
-        // No actualizamos el estado 'isInCart' de 'products' para los destacados 
-        // ya que no están en la lista principal de la grilla.
+  
     };
 
     const handleRemoveFromCart = (id) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== id));
     };
 
-    // Manejador de remoción para el modal de carrito (para productos de la grilla principal)
+    
     const handleRemoveFromCartModal = (id) => {
         // Remover del modal
         handleRemoveFromCart(id);
         
-        // Actualizar el tilde de "Agregado" si el producto estaba en la grilla principal
+        
         if (products.some(p => p.id === id)) {
             toggleItemState(id, 'isInCart');
         }
@@ -151,21 +150,19 @@ function App() {
     };
 
 
-    // --- LÓGICA DE FILTRADO Y BÚSQUEDA (USEMEMO) ---
+    // LÓGICA DE FILTRADO Y BÚSQUEDA 
 
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
-            // 1. Filtro de Categoría
+            
             const categoryMatch = filters.category === 'Todos' || product.category === filters.category;
-
-            // 2. Filtros de Checkbox (todos deben coincidir si están activados)
             const conAzucarMatch = filters.conAzucar ? product.conAzucar : true;
             const sinTaccMatch = filters.sinTacc ? product.sinTacc : true;
             const veganoMatch = filters.vegano ? product.vegano : true;
             
             const checkboxMatch = conAzucarMatch && sinTaccMatch && veganoMatch;
             
-            // 3. Filtro de Búsqueda (NUEVO)
+          
             const searchMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
             
             return categoryMatch && checkboxMatch && searchMatch;
@@ -173,7 +170,7 @@ function App() {
     }, [products, filters, searchTerm]); // Dependencia del nuevo estado de búsqueda
 
 
-    // --- RENDERIZADO ---
+
     return (
         <div className="App">
             
@@ -189,7 +186,7 @@ function App() {
             <FeaturedSlider products={featuredProducts} onAddToCart={handleAddFeaturedToCart} /> 
 
             <div className="main-content-wrapper">
-                {/* FilterSidebar recibe el estado y los handlers del filtro */}
+                { }
                 <FilterSidebar 
                     filters={filters}
                     onCategoryChange={handleCategoryChange}
@@ -197,7 +194,7 @@ function App() {
                 />
                 
                 <main className="product-area">
-                    {/* ProductGrid recibe la lista de productos FILTRADA */}
+                    { }
                     <ProductGrid 
                         products={filteredProducts} 
                         onToggleFavorite={handleToggleFavorite}

@@ -21,10 +21,9 @@
 }
 
 .nav-sticky li {
-  /* AUMENTAMOS el padding derecho para crear más espacio entre la palabra y el borde del <li> */
-  padding: 0 1.5rem 0 1rem; /* 1.5rem a la derecha */
+  padding: 0 1.5rem 0 1rem; 
   font-weight: bold;
-  position: relative; /* Necesario para posicionar los badges */
+  position: relative; 
   cursor: pointer;
 }
 
@@ -35,26 +34,26 @@
 }
 
 .nav-sticky li a:hover {
-  color: #e0f2f7; /* Color de acento de La Celestina */
+  color: #e0f2f7; 
 }
 
 /* --- Estilos de Badge (Contador) --- */
 
 .cart-badge, .favorites-badge {
-    /* Ajustes para forzar el círculo y la separación */
+   
     position: absolute;
-    top: 5px; /* Baja un poco el badge */
+    top: 5px; 
     
-    /* MOVEMOS EL BADGE AÚN MÁS A LA DERECHA */
+   
     right: -15px; 
     
     background-color: red; 
     color: white;
     
-    /* Forma Circular */
+    
     border-radius: 50%;
     
-    /* Ajustamos el tamaño para que sea circular */
+  
     padding: 3px 6px; 
     min-width: 18px; 
     height: 18px; 
@@ -71,10 +70,7 @@
     z-index: 10;
 }
 
-/* El ajuste de right: -15px en el estilo general aplica a ambos badges. */
 
-
-/* Media query para móviles: oculta la navegación de escritorio en pantallas pequeñas */
 @media (max-width: 768px) {
   .nav-desktop {
     display: none;

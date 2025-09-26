@@ -1,12 +1,10 @@
 // src/components/FeaturedSlider/FeaturedSlider.jsx
 import React, { useState } from 'react';
 import './FeaturedSlider.css';
-import { FaShoppingCart } from 'react-icons/fa'; // Importamos el ícono
+import { FaShoppingCart } from 'react-icons/fa'; 
 
-// La data se pasa desde App.jsx
-// Eliminamos la lista featuredProducts y solo usamos las props.
 
-const FeaturedSlider = ({ products, onAddToCart }) => { // Recibe products y onAddToCart
+const FeaturedSlider = ({ products, onAddToCart }) => { 
 
     const [currentIndex, setCurrentIndex] = useState(0);
 

@@ -1,18 +1,18 @@
 /* src/components/FilterSidebar/FilterSidebar.css */
 
 .filter-sidebar {
-  width: 280px; /* Ancho fijo para el sidebar en escritorio */
+  width: 280px; 
   padding: 10px;
 }
 
 .filter-sidebar h2 {
   color: #333;
-  border-bottom: 2px solid #e0f2f7; /* Color de acento */
+  border-bottom: 2px solid #e0f2f7; 
   padding-bottom: 5px;
   margin-bottom: 15px;
 }
 
-/* --- Botones de Categoría (en Bloque) --- */
+/* --- Botones de Categoría  --- */
 .category-buttons {
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@
 }
 
 .category-btn.active, .category-btn:hover {
-  background-color: #e0f2f7; /* Azul claro de La Celestina */
+  background-color: #e0f2f7; 
   color: #333;
   border-color: #007bff;
   font-weight: bold;
@@ -81,19 +81,19 @@
   margin-bottom: 10px;
 }
 
-/* Media Query para móvil: la publicidad no se muestra y el sidebar se convierte en una fila */
+
 @media (max-width: 768px) {
   .filter-sidebar {
-    width: 100%; /* Ocupa todo el ancho en móvil */
+    width: 100%; 
     border-bottom: 1px solid #eee;
     margin-bottom: 10px;
   }
 
   .ad-container {
-    display: none; /* Oculta la publicidad en móvil */
+    display: none; 
   }
 
-  /* En móvil, los botones de categoría pueden ir en una fila horizontal con scroll */
+  
   .category-buttons {
     flex-direction: row;
     overflow-x: auto;
@@ -103,6 +103,6 @@
   }
   
   .category-btn {
-    flex-shrink: 0; /* Evita que los botones se achiquen */
+    flex-shrink: 0; 
   }
 }
