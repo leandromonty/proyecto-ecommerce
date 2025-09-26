@@ -1,0 +1,108 @@
+/* src/components/FilterSidebar/FilterSidebar.css */
+
+.filter-sidebar {
+  width: 280px; /* Ancho fijo para el sidebar en escritorio */
+  padding: 10px;
+}
+
+.filter-sidebar h2 {
+  color: #333;
+  border-bottom: 2px solid #e0f2f7; /* Color de acento */
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+/* --- Botones de Categoría (en Bloque) --- */
+.category-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.category-btn {
+  background-color: #f0f0f0;
+  color: #555;
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.category-btn.active, .category-btn:hover {
+  background-color: #e0f2f7; /* Azul claro de La Celestina */
+  color: #333;
+  border-color: #007bff;
+  font-weight: bold;
+}
+
+/* --- Collapse --- */
+.collapse-header {
+  width: 100%;
+  background-color: #555;
+  color: white;
+  padding: 10px;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.collapse-content {
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+/* --- Publicidad (Ocultar en Móvil) --- */
+.ad-container {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.ad-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ad-title {
+  text-align: center;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+/* Media Query para móvil: la publicidad no se muestra y el sidebar se convierte en una fila */
+@media (max-width: 768px) {
+  .filter-sidebar {
+    width: 100%; /* Ocupa todo el ancho en móvil */
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+  }
+
+  .ad-container {
+    display: none; /* Oculta la publicidad en móvil */
+  }
+
+  /* En móvil, los botones de categoría pueden ir en una fila horizontal con scroll */
+  .category-buttons {
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .category-btn {
+    flex-shrink: 0; /* Evita que los botones se achiquen */
+  }
+}
