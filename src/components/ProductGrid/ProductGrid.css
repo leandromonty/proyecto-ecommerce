@@ -3,30 +3,32 @@
 /* --- Diseño de la Grilla (Web: 5 columnas) --- */
 .product-grid-container {
   display: grid;
-  /* 5 productos por fila para pantallas grandes */
+  /* Requisito Web: 5 productos por fila */
   grid-template-columns: repeat(5, 1fr); 
   gap: 20px;
   padding: 20px;
 }
 
 .product-card {
-  /* Necesario para posicionar el ícono de favoritos */
   position: relative; 
-  
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: 1px solid #e0e0e0; /* Borde más suave */
+  border-radius: 12px; /* Esquinas más redondeadas */
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada y suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Efecto de elevación al pasar el mouse */
 }
 
 .product-card img {
   width: 100%;
-  height: auto;
+  /* Mantenemos una altura fija para la imagen para uniformidad */
+  height: 180px; 
+  object-fit: cover;
   display: block;
 }
 
@@ -35,31 +37,40 @@
   text-align: center;
 }
 
+.product-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #dc3545; /* Rojo de acento para precios */
+    margin: 5px 0 15px 0;
+}
 
-/* --- Estilos para el ícono de Favoritos (Tilde) --- */
+
+/* --- Estilos de Íconos de Favoritos --- */
 .fav-icon {
   position: absolute;
   top: 10px;
   right: 10px;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #ccc; /* Gris cuando no está activo */
-  transition: color 0.2s;
-  background-color: white;
-  padding: 5px;
+  color: #ccc; 
+  transition: all 0.2s;
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+  padding: 8px; /* Más grande para un mejor touch target */
   border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 5;
 }
 
 .fav-icon:hover {
-  color: red;
+  color: #ff8c00; /* Naranja/Ámbar al pasar el mouse */
+  transform: scale(1.1);
 }
 
 .fav-icon.active {
-  color: red; /* Corazón rojo cuando es favorito */
+  color: #dc3545; /* Rojo cuando es favorito */
 }
 
-/* --- Estilos para el botón de Comprar (Tilde) --- */
+/* --- Estilos para el botón de Comprar (Buy Button) --- */
 .buy-btn {
   display: flex;
   align-items: center;
@@ -68,40 +79,56 @@
   width: 100%;
   margin-top: 10px;
   
-  /* Estilos base */
-  background-color: #e0f2f7; 
-  color: #333;
-  border: 1px solid #007bff;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-.buy-btn.checked {
-  background-color: #4CAF50; /* Fondo verde cuando está tildado/agregado al carrito */
+  /* Estilos base (Comprar) */
+  background-color: #007bff; /* Azul primario */
   color: white;
-  border-color: #4CAF50;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 8px; /* Borde redondeado */
+  font-weight: 600;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Sombra para profundidad */
+  transition: all 0.3s ease;
+  
 }
 
-.buy-btn.checked:hover {
-  background-color: #45a049;
+.buy-btn:hover:not(.checked) {
+    background-color: #0056b3;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Estado 'Agregado' (Checked) */
+.buy-btn.checked {
+    background-color: #28a745; /* Verde de éxito */
+    color: white;
+    border: 1px solid #1e7e34;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+    pointer-events: none; /* Deshabilitar clics rápidos para evitar doble-compra */
 }
 
 
-/* --- Media Queries de Responsive --- */
-
-/* Tablet (hasta 1024px): 3 productos por fila */
+/* Media Query para Tablet (max-width: 1024px) */
 @media (max-width: 1024px) {
-  .product-grid-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
+    .product-grid-container {
+        /* Requisito Tablet: 3 productos por fila */
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 15px;
+    }
 }
 
-/* Celular (hasta 600px): 2 productos por fila */
+/* Media Query para Celular (max-width: 600px) */
 @media (max-width: 600px) {
-  .product-grid-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .product-grid-container {
+        /* Requisito Celular: 2 productos por fila */
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .buy-btn {
+        padding: 10px 15px; /* Ajuste para pantalla pequeña */
+        font-size: 1rem;
+    }
 }

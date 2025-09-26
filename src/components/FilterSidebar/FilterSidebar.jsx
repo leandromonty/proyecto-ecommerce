@@ -2,13 +2,23 @@
 import React, { useState } from 'react';
 import './FilterSidebar.css';
 
-const FilterSidebar = () => {
+// Lista fija de categorías (debe coincidir con las usadas en App.jsx)
+const CATEGORIES = ['Todos', 'Tartas', 'Budines', 'Muffins', 'Postres Fríos'];
+
+const FilterSidebar = ({ filters, onCategoryChange, onCheckboxChange }) => {
   
-  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
+  // El estado interno solo maneja la visibilidad del acordeón
+  const [isCollapseOpen, setIsCollapseOpen] = useState(true); // Lo dejamos abierto por defecto para mejor visualización
 
   const toggleCollapse = () => {
     setIsCollapseOpen(!isCollapseOpen);
   };
+  
+  // Maneja el clic en los checkboxes y notifica a App.jsx
+  const handleCheckboxClick = (e) => {
+      onCheckboxChange(e.target.name, e.target.checked);
+  };
+  
 
   return (
     <aside className="filter-sidebar">
@@ -16,14 +26,18 @@ const FilterSidebar = () => {
 
       {/* Botones de Categoria */}
       <div className="category-buttons">
-        <button className="category-btn active">Todos</button>
-        <button className="category-btn">Tartas</button>
-        <button className="category-btn">Budines</button>
-        <button className="category-btn">Muffins</button>
-        <button className="category-btn">Postres Fríos</button>
+        {CATEGORIES.map(category => (
+            <button 
+                key={category}
+                className={`category-btn ${filters.category === category ? 'active' : ''}`}
+                onClick={() => onCategoryChange(category)}
+            >
+                {category}
+            </button>
+        ))}
       </div>
 
-      {/* /Acordeón para Filtros */}
+      {/* Acordeón para Filtros Adicionales */}
       <div className="filter-collapse">
         <button className="collapse-header" onClick={toggleCollapse}>
           Filtros Adicionales {isCollapseOpen ? '▲' : '▼'}
@@ -31,10 +45,38 @@ const FilterSidebar = () => {
         
         {isCollapseOpen && (
           <div className="collapse-content">
-            {/*checkboxes*/}
-            <label><input type="checkbox" /> Con Azúcar</label>
-            <label><input type="checkbox" /> Sin TACC</label>
-            <label><input type="checkbox" /> Vegano</label>
+            {/* Checkbox para Con Azúcar */}
+            <label>
+                <input 
+                    type="checkbox" 
+                    name="conAzucar" 
+                    checked={filters.conAzucar}
+                    onChange={handleCheckboxClick}
+                /> 
+                Con Azúcar
+            </label>
+            
+            {/* Checkbox para Sin TACC */}
+            <label>
+                <input 
+                    type="checkbox" 
+                    name="sinTacc" 
+                    checked={filters.sinTacc}
+                    onChange={handleCheckboxClick}
+                /> 
+                Sin TACC
+            </label>
+            
+            {/* Checkbox para Vegano */}
+            <label>
+                <input 
+                    type="checkbox" 
+                    name="vegano" 
+                    checked={filters.vegano}
+                    onChange={handleCheckboxClick}
+                /> 
+                Vegano
+            </label>
           </div>
         )}
       </div>
@@ -44,7 +86,7 @@ const FilterSidebar = () => {
         <p className="ad-title">PUBLICIDAD</p>
         <img 
           src="https://via.placeholder.com/250x400?text=Tu+Anuncio+Aqui" 
-          alt="Publicidad lateral" 
+          alt="Publicidad" 
         />
       </div>
     </aside>
