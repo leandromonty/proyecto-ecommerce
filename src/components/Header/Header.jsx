@@ -1,146 +1,113 @@
 // src/components/Header/Header.jsx
 
 import React, { useState } from 'react';
-// Eliminamos la dependencia de './Header.css' y 'react-icons/fa'
+import './Header.css';
+import Logo from '../../assets/Logo.png'; 
+import { FaUser, FaSearch } from 'react-icons/fa';
 
-// Usamos una URL de placeholder para simular el logo
-const LOGO_PLACEHOLDER = 'https://placehold.co/150x50/e0f2f7/007bff?text=La+Celestina';
-
-
-const Header = () => {
+// NOTA: Header recibe la función de App.jsx para manejar el filtro.
+const Header = ({ onSearchChange }) => { 
   
-  // Controla la visibilidad del buscador (input de texto)
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  // Controla si el menú móvil de hamburguesa está abierto
+  // Estado para controlar la visibilidad del input de búsqueda en MÓVIL
+  const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
+  // Estado para controlar si el menú móvil de hamburguesa está abierto (solo móvil)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Función para mostrar/ocultar el buscador
-  const handleSearchClick = () => {
-    setIsSearchVisible(!isSearchVisible);
+  // Maneja la visibilidad del buscador MÓVIL
+  const handleMobileSearchClick = () => {
+    // Si abrimos el buscador, cerramos el menú móvil.
+    if (!isMobileSearchVisible) {
+      setIsMobileMenuOpen(false);
+    }
+    setIsMobileSearchVisible(!isMobileSearchVisible);
   };
 
-  // Función para abrir/cerrar el menú de hamburguesa
+  // Maneja el estado del menú de hamburguesa.
   const handleMobileMenuClick = () => {
+    // Si abrimos el menú móvil, cerramos el buscador.
+    if (!isMobileMenuOpen) {
+      setIsMobileSearchVisible(false);
+    }
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Estilos CSS en línea
-  const styles = {
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '1rem',
-        backgroundColor: '#e0f2f7',
-        borderBottom: '1px solid #ccc',
-        color: '#333',
-        position: 'relative', // Necesario para el buscador desplegable
-    },
-    logo: {
-        flexGrow: 1, // Permite que el logo ocupe el espacio restante
-    },
-    logoImg: {
-        height: '50px',
-    },
-    headerActions: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '20px', // Espacio entre íconos
-    },
-    icon: {
-        fontSize: '1.5rem',
-        cursor: 'pointer',
-        padding: '5px',
-        transition: 'color 0.2s',
-    },
-    searchContainer: {
-        position: 'absolute',
-        top: '70px', // Debajo del header
-        left: '0',
-        width: '100%',
-        padding: '10px',
-        backgroundColor: '#f8f8f8',
-        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-        zIndex: 999,
-        display: isSearchVisible ? 'block' : 'none', // Controlado por el estado
-    },
-    searchInput: {
-        width: '100%',
-        padding: '10px',
-        border: '1px solid #ccc',
-        borderRadius: '5px',
-    },
-    mobileMenuIcon: {
-        fontSize: '1.5rem',
-        cursor: 'pointer',
-        padding: '5px',
-        // Ocultar en desktop (se puede manejar con media queries o dejar en línea para este ejemplo)
-        display: window.innerWidth <= 768 ? 'block' : 'none', 
-    },
-    mobileNav: {
-        position: 'absolute',
-        top: '70px',
-        left: '0',
-        width: '100%',
-        backgroundColor: '#fff',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        zIndex: 998,
-        display: isMobileMenuOpen ? 'flex' : 'none',
-        flexDirection: 'column',
-        listStyle: 'none',
-        padding: '0',
-        margin: '0',
-    },
-    mobileNavItem: {
-        padding: '10px 20px',
-        width: '100%',
-        borderBottom: '1px solid #eee',
-        textAlign: 'left',
-    }
+  // Conecta el input de búsqueda con App.jsx.
+  const handleInputChange = (e) => {
+      // Envía el valor del input a la función en App.jsx para filtrar.
+      onSearchChange(e.target.value);
   };
 
 
   return (
-      <header style={styles.header}>
-      {/* 1. Logo */}
-      <div style={styles.logo}>
-        <img src={LOGO_PLACEHOLDER} alt="La Celestina - Logo" style={styles.logoImg} />
+      <header className="header">
+      
+      {/* Logo */}
+      <div className="logo">
+        <img src={Logo} alt="La Celestina - Delicias y más" className="logo-img" />
       </div>
 
-      <div style={styles.headerActions}>
-          
-          {/* 2. Ícono de búsqueda (usamos lupa emoji) */}
-          <div style={styles.icon} onClick={handleSearchClick} title="Buscar">
-              🔍
-          </div>
-          
-          {/* 3. Ícono de Usuario (usamos emoji de persona) */}
-          <div style={styles.icon} title="Mi Cuenta">
-              👤
-          </div>
-
-          {/* Ícono de menú de hamburguesa (para móvil) - Usamos emoji */}
-          <div style={{...styles.icon, ...styles.mobileMenuIcon}} onClick={handleMobileMenuClick} title="Menú">
-              ☰
-          </div>
+      {/* Íconos de Redes Sociales (se ocultan en móvil vía Header.css) */}
+      <div className="social-icons">
+        <span>FB</span>
+        <span>TW</span>
+        <span>IG</span>
+      </div>
+      
+      {/* 1. Buscador Fijo para Desktop (Se oculta en móvil vía Header.css) */}
+      <div className="search-container fixed-search">
+        <input 
+          type="text" 
+          placeholder="Buscar productos..." 
+          onChange={handleInputChange} 
+        />
+        <div className="search-icon-fixed">
+          <FaSearch />
+        </div>
       </div>
 
-      {/* Buscador (condicionalmente visible) - Solo input */}
-      <div style={styles.searchContainer}>
-          <input type="text" placeholder="Buscar productos..." style={styles.searchInput} />
+      {/* Contenedor de Acciones (Usuario, Lupa Móvil, Hamburguesa) */}
+      <div className="header-actions">
+        
+        {/* Ícono de Usuario - Visible en todas partes, a menos que el menú móvil esté abierto */}
+        <div className="user-icon" title="Mi Cuenta">
+          <FaUser />
+        </div>
+        
+        {/* Ícono de Búsqueda Móvil - Solo visible en móvil vía Header.css */}
+        <div className="mobile-search-icon" onClick={handleMobileSearchClick} title="Buscar">
+          <FaSearch />
+        </div>
+
+        {/* Ícono de menú de hamburguesa - Solo visible en móvil vía Header.css */}
+        <div className="mobile-menu-icon" onClick={handleMobileMenuClick} title="Menú">
+          ☰
+        </div>
       </div>
 
-      {/* Menú de navegación móvil (Mantenemos la estructura) */}
+
+      {/* Buscador Desplegable para MÓVIL (Solo visible si isMobileSearchVisible es true) */}
+      {isMobileSearchVisible && (
+        <div className="search-container-mobile">
+          <input 
+            type="text" 
+            placeholder="Buscar productos por nombre..." 
+            onChange={handleInputChange} 
+          />
+        </div>
+      )}
+
+
+      {/* Menú de navegación móvil (solo visible si isMobileMenuOpen es true Y en móvil) */}
       {isMobileMenuOpen && (
-          <nav>
-              <ul style={styles.mobileNav}>
-                  <li style={styles.mobileNavItem}>Home</li>
-                  <li style={styles.mobileNavItem}>Destacado</li>
-                  <li style={styles.mobileNavItem}>Contacto</li>
-                  <li style={styles.mobileNavItem}>Favoritos</li>
-                  <li style={styles.mobileNavItem}>Carrito</li> 
-              </ul>
-          </nav>
+        <nav className="mobile-nav">
+          <ul>
+            <li>Home</li>
+            <li>Destacado</li>
+            <li>Contacto</li>
+            <li>Favoritos</li>
+            <li>Carrito</li>
+          </ul>
+        </nav>
       )}
     </header>
   );

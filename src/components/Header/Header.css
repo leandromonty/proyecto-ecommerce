@@ -1,6 +1,5 @@
 /* src/components/Header/Header.css */
 
-/* Estilos para el Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -9,35 +8,84 @@
   background-color: #e0f2f7;
   border-bottom: 1px solid #ccc;
   color: #333;
+  position: relative; 
 }
 
 .logo-img {
   height: 50px;
 }
 
-/* Oculta el menú y el ícono de hamburguesa en pantallas de escritorio */
-.mobile-menu-icon,
-.mobile-nav {
-  display: none;
-}
-
-/* Oculta el buscador por defecto */
-.search-container {
+/* ------------------- ACCIONES E ÍCONOS ------------------- */
+.header-actions {
   display: flex;
+  align-items: center;
+  gap: 15px; 
 }
 
-/* Media query para pantallas más pequeñas (móviles) */
-@media (max-width: 768px) {
-  /* En móvil, oculta los íconos sociales y el buscador en línea del header */
-  .social-icons,
-  .search-container {
+/* Estilo base para los íconos de acción */
+.user-icon, .mobile-menu-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s;
+  padding: 5px;
+}
+
+.user-icon:hover {
+  color: #007bff; /* Color de acento al pasar el ratón */
+}
+
+/* ------------------- BUSCADOR FIJO (Desktop) ------------------- */
+.search-container.fixed-search {
+  display: flex;
+  align-items: center;
+  margin: 0 20px; /* Espacio a los lados */
+  flex-grow: 1; /* Permite que ocupe el espacio central */
+  max-width: 400px; /* Limita el ancho en desktop */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden; /* Asegura que el contenido quede dentro */
+}
+
+.search-container input {
+  border: none;
+  outline: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.search-icon-fixed {
+  background-color: #007bff; /* Color de acento para el fondo del ícono */
+  color: white;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+
+/* ------------------- MEDIA QUERIES (Móvil) ------------------- */
+@media (min-width: 769px) {
+  /* OCULTA EL MENÚ DE HAMBURGUESA EN DESKTOP */
+  .mobile-menu-icon {
     display: none;
   }
+}
 
+@media (max-width: 768px) {
+  /* En móvil, ocultamos las redes sociales y el buscador fijo */
+  .social-icons,
+  .search-container.fixed-search {
+    display: none;
+  }
+  
   /* Muestra el ícono de hamburguesa */
   .mobile-menu-icon {
     display: block;
-    cursor: pointer;
   }
 
   /* Estilos para el menú móvil cuando está activo */
@@ -45,24 +93,24 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 60px; /* Ajusta este valor si tu header tiene otra altura */
+    top: 71px; 
     left: 0;
     width: 100%;
     background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
   }
-
+  
   .mobile-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    width: 100%;
   }
-
+  
   .mobile-nav li {
-    padding: 1rem;
+    padding: 15px 20px;
     border-bottom: 1px solid #eee;
-    text-align: center;
+    font-weight: bold;
+    color: #333;
   }
 }

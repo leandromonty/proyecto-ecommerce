@@ -1,6 +1,6 @@
 // src/App.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 // Componentes de Estructura Principal (Rutas corregidas)
 import Header from './components/Header/Header';
 import Nav from './components/Nav/Nav';
@@ -29,159 +29,156 @@ const initialProducts = Array.from({ length: 15 }, (_, i) => ({
     isInCart: false,
 }));
 
-// Productos Destacados
+// Productos Destacados (usamos IDs altos para evitar colisiones con initialProducts)
 const featuredProducts = [
-    { id: 101, name: 'Tarta de Limón Clásica', image: 'https://placehold.co/300x200?text=Limon', price: 850, rawPrice: 850 },
-    { id: 102, name: 'Budín de Naranja y Chocolate', image: 'https://placehold.co/300x200?text=Naranja', price: 620, rawPrice: 620 },
-    { id: 103, name: 'Muffins de Vainilla', image: 'https://placehold.co/300x200?text=Muffin', price: 400, rawPrice: 400 },
+    { id: 101, name: 'Tarta de Limón Clásica', image: 'https://placehold.co/300x200?text=Limon', price: 850, category: 'Tartas' },
+    { id: 102, name: 'Budín de Naranja y Chocolate', image: 'https://placehold.co/300x200?text=Naranja', price: 620, category: 'Budines' },
+    { id: 103, name: 'Muffins de Vainilla y Arándanos', image: 'https://placehold.co/300x200?text=Muffin', price: 400, category: 'Muffins' },
 ];
 
 
 function App() {
+    // --- ESTADOS PRINCIPALES ---
+    const [products, setProducts] = useState(initialProducts);
+    const [cartItems, setCartItems] = useState([]);
+    const [isCartOpen, setIsCartOpen] = useState(false);
     
-    // ESTADO CENTRALIZADO
-    const [products, setProducts] = useState(initialProducts); // Lista principal de productos
-    const [cartItems, setCartItems] = useState([]);           // Items en el carrito
-    const [isCartOpen, setIsCartOpen] = useState(false);      // Modal del carrito
-
-    // ESTADO PARA FILTROS
+    // ESTADO DE FILTROS Y BÚSQUEDA
     const [filters, setFilters] = useState({
         category: 'Todos',
         conAzucar: false,
         sinTacc: false,
         vegano: false,
     });
+    const [searchTerm, setSearchTerm] = useState(''); // <--- NUEVO ESTADO DE BÚSQUEDA
 
+    // --- MANEJADORES DE ESTADO GENERAL ---
 
-    // --- MANEJADORES DE FILTROS ---
-    const handleCategoryChange = (newCategory) => {
-        setFilters(prevFilters => ({
-            ...prevFilters,
-            category: newCategory
-        }));
+    // Maneja el cambio en el input de búsqueda
+    const handleSearchChange = (term) => {
+        setSearchTerm(term);
     };
 
-    const handleCheckboxChange = (filterName, isChecked) => {
-        setFilters(prevFilters => ({
-            ...prevFilters,
-            [filterName]: isChecked
-        }));
+    // Maneja el toggle de favorito/carrito en la grilla
+    const toggleItemState = (id, field) => {
+        setProducts(prevProducts =>
+            prevProducts.map(product =>
+                product.id === id ? { ...product, [field]: !product[field] } : product
+            )
+        );
     };
 
-    // --- LÓGICA DE FILTRADO ---
-    
-    const filteredProducts = products.filter(product => {
-        // 1. Filtrado por Categoría
-        if (filters.category !== 'Todos' && product.category !== filters.category) {
-            return false;
+    const handleToggleFavorite = (id) => toggleItemState(id, 'isFavorite');
+    const handleToggleCart = (id) => {
+        const product = products.find(p => p.id === id);
+        if (product.isInCart) {
+            handleRemoveFromCart(id);
+        } else {
+            handleAddToCart(product);
         }
+        toggleItemState(id, 'isInCart');
+    };
 
-        // 2. Filtrado por Checkboxes (Adicionales)
-        // Solo incluye el producto si el filtro está activo Y el producto cumple la condición
-        if (filters.conAzucar && !product.conAzucar) {
-            return false;
-        }
-        if (filters.sinTacc && !product.sinTacc) {
-            return false;
-        }
-        if (filters.vegano && !product.vegano) {
-            return false;
-        }
+    // --- LÓGICA DE CARRITO ---
+
+    const toggleCartModal = () => setIsCartOpen(!isCartOpen);
+
+    const handleAddToCart = (product) => {
+        // Formatear el precio para el carrito (asumiendo que Carrito.jsx maneja el string)
+        const priceString = `$${product.price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
         
-        // Si pasa todos los filtros
-        return true;
-    });
+        setCartItems(prevItems => [
+            ...prevItems,
+            { 
+                id: product.id, 
+                name: product.name, 
+                image: product.image, 
+                price: priceString 
+            }
+        ]);
+    };
+
+    const handleAddFeaturedToCart = (featuredProduct) => {
+        // Para productos destacados, los agregamos directamente al carrito
+        const priceString = `$${featuredProduct.price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+        setCartItems(prevItems => [
+            ...prevItems,
+            { 
+                id: featuredProduct.id, 
+                name: featuredProduct.name, 
+                image: featuredProduct.image, 
+                price: priceString 
+            }
+        ]);
+        // No actualizamos el estado 'isInCart' de 'products' para los destacados 
+        // ya que no están en la lista principal de la grilla.
+    };
+
+    const handleRemoveFromCart = (id) => {
+        setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    };
+
+    // Manejador de remoción para el modal de carrito (para productos de la grilla principal)
+    const handleRemoveFromCartModal = (id) => {
+        // Remover del modal
+        handleRemoveFromCart(id);
+        
+        // Actualizar el tilde de "Agregado" si el producto estaba en la grilla principal
+        if (products.some(p => p.id === id)) {
+            toggleItemState(id, 'isInCart');
+        }
+    }
 
 
-    // --- CÁLCULO DE CONTADORES ---
-    const favoriteItemCount = products.filter(p => p.isFavorite).length; 
+    // Contadores para el Nav
     const cartItemCount = cartItems.length;
+    const favoriteItemCount = products.filter(p => p.isFavorite).length;
 
-    // --- MANEJADORES DE CARRITO Y FAVORITOS ---
-    
-    const handleToggleFavorite = (productId) => {
-        setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.id === productId ? { ...product, isFavorite: !product.isFavorite } : product
-            )
-        );
+    // --- LÓGICA DE FILTROS ---
+
+    const handleCategoryChange = (category) => {
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            category: category,
+        }));
     };
 
-    const toggleCartModal = () => {
-        setIsCartOpen(prev => !prev);
+    const handleCheckboxChange = (name, checked) => {
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [name]: checked,
+        }));
     };
-    
-    const handleToggleCart = (productId) => {
-        let productData = products.find(p => p.id === productId);
-        if (!productData) return;
 
-        const newIsInCart = !productData.isInCart;
-        
-        setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.id === productId ? { ...product, isInCart: newIsInCart } : product
-            )
-        );
 
-        setCartItems(prevCartItems => {
-            if (newIsInCart) {
-                const price = productData.price;
-                const formattedPrice = `$${price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-                
-                return [
-                    ...prevCartItems,
-                    {
-                        id: productData.id,
-                        name: productData.name,
-                        image: productData.image,
-                        price: formattedPrice,
-                        rawPrice: price, 
-                    }
-                ];
-            } else {
-                return prevCartItems.filter(item => item.id !== productId);
-            }
+    // --- LÓGICA DE FILTRADO Y BÚSQUEDA (USEMEMO) ---
+
+    const filteredProducts = useMemo(() => {
+        return products.filter(product => {
+            // 1. Filtro de Categoría
+            const categoryMatch = filters.category === 'Todos' || product.category === filters.category;
+
+            // 2. Filtros de Checkbox (todos deben coincidir si están activados)
+            const conAzucarMatch = filters.conAzucar ? product.conAzucar : true;
+            const sinTaccMatch = filters.sinTacc ? product.sinTacc : true;
+            const veganoMatch = filters.vegano ? product.vegano : true;
+            
+            const checkboxMatch = conAzucarMatch && sinTaccMatch && veganoMatch;
+            
+            // 3. Filtro de Búsqueda (NUEVO)
+            const searchMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+            
+            return categoryMatch && checkboxMatch && searchMatch;
         });
-    };
-    
-    const handleRemoveFromCartModal = (productId) => {
-        setCartItems(prevCartItems =>
-            prevCartItems.filter(item => item.id !== productId)
-        );
+    }, [products, filters, searchTerm]); // Dependencia del nuevo estado de búsqueda
 
-        setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.id === productId ? { ...product, isInCart: false } : product
-            )
-        );
-    };
-
-    const handleAddFeaturedToCart = (productData) => {
-        const price = productData.price;
-        const formattedPrice = `$${price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-
-        setCartItems(prevCartItems => {
-            if (prevCartItems.some(item => item.id === productData.id)) {
-                return prevCartItems;
-            }
-            return [
-                ...prevCartItems,
-                {
-                    id: productData.id,
-                    name: productData.name,
-                    image: productData.image,
-                    price: formattedPrice,
-                    rawPrice: price,
-                }
-            ];
-        });
-    };
 
     // --- RENDERIZADO ---
     return (
         <div className="App">
             
-            <Header /> 
+            {/* Header ahora recibe el manejador de búsqueda */}
+            <Header onSearchChange={handleSearchChange} /> 
             
             <Nav 
                 onToggleCart={toggleCartModal} 
