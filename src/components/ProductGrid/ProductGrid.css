@@ -1,12 +1,18 @@
-/* Estilos para la grilla en Web (5 productos por fila) */
+/* src/components/ProductGrid/ProductGrid.css */
+
+/* --- Diseño de la Grilla (Web: 5 columnas) --- */
 .product-grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  /* 5 productos por fila para pantallas grandes */
+  grid-template-columns: repeat(5, 1fr); 
   gap: 20px;
   padding: 20px;
 }
 
 .product-card {
+  /* Necesario para posicionar el ícono de favoritos */
+  position: relative; 
+  
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
@@ -29,14 +35,71 @@
   text-align: center;
 }
 
-/* Media query para Tablet (3 productos por fila) [cite: 26] */
+
+/* --- Estilos para el ícono de Favoritos (Tilde) --- */
+.fav-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ccc; /* Gris cuando no está activo */
+  transition: color 0.2s;
+  background-color: white;
+  padding: 5px;
+  border-radius: 50%;
+  z-index: 5;
+}
+
+.fav-icon:hover {
+  color: red;
+}
+
+.fav-icon.active {
+  color: red; /* Corazón rojo cuando es favorito */
+}
+
+/* --- Estilos para el botón de Comprar (Tilde) --- */
+.buy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+  
+  /* Estilos base */
+  background-color: #e0f2f7; 
+  color: #333;
+  border: 1px solid #007bff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.buy-btn.checked {
+  background-color: #4CAF50; /* Fondo verde cuando está tildado/agregado al carrito */
+  color: white;
+  border-color: #4CAF50;
+}
+
+.buy-btn.checked:hover {
+  background-color: #45a049;
+}
+
+
+/* --- Media Queries de Responsive --- */
+
+/* Tablet (hasta 1024px): 3 productos por fila */
 @media (max-width: 1024px) {
   .product-grid-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Media query para Celular (2 productos por fila) [cite: 27] */
+/* Celular (hasta 600px): 2 productos por fila */
 @media (max-width: 600px) {
   .product-grid-container {
     grid-template-columns: repeat(2, 1fr);
