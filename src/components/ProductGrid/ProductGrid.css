@@ -1,134 +1,150 @@
 /* src/components/ProductGrid/ProductGrid.css */
-
-/* --- Diseño de la Grilla (Web: 5 columnas) --- */
 .product-grid-container {
-  display: grid;
-  /* Requisito Web: 5 productos por fila */
-  grid-template-columns: repeat(5, 1fr); 
-  gap: 20px;
-  padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 25px; 
+    padding: 20px;
+    background-color: #f7f9fc; 
+    border-radius: 8px;
 }
 
+/* ------------------- Diseño de la Tarjeta ------------------- */
 .product-card {
-  position: relative; 
-  border: 1px solid #e0e0e0; /* Borde más suave */
-  border-radius: 12px; /* Esquinas más redondeadas */
-  overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada y suave */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: #ffffff;
+    background-color: white;
+    border: 1px solid #e0f0f5;
+    border-radius: 12px;
+    overflow: hidden; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Efecto de elevación al pasar el mouse */
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.product-card img {
-  width: 100%;
-  /* Mantenemos una altura fija para la imagen para uniformidad */
-  height: 180px; 
-  object-fit: cover;
-  display: block;
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; 
+    border-bottom: 1px solid #eee;
 }
 
-.product-info {
-  padding: 15px;
-  text-align: center;
+.card-content {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-name {
+    font-size: 1.3rem;
+    color: #333;
+    margin: 0 0 10px 0;
+    font-weight: 700;
 }
 
 .product-price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #dc3545; /* Rojo de acento para precios */
-    margin: 5px 0 15px 0;
+    font-size: 1.6rem;
+    color: #007bff; 
+    margin: 10px 0;
 }
 
-
-/* --- Estilos de Íconos de Favoritos --- */
-.fav-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #ccc; 
-  transition: all 0.2s;
-  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
-  padding: 8px; /* Más grande para un mejor touch target */
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 5;
+/* --- Tags de Dieta --- */
+.product-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
-.fav-icon:hover {
-  color: #ff8c00; /* Naranja/Ámbar al pasar el mouse */
-  transform: scale(1.1);
-}
-
-.fav-icon.active {
-  color: #dc3545; /* Rojo cuando es favorito */
-}
-
-/* --- Estilos para el botón de Comprar (Buy Button) --- */
-.buy-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  margin-top: 10px;
-  
-  /* Estilos base (Comprar) */
-  background-color: #007bff; /* Azul primario */
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 8px; /* Borde redondeado */
-  font-weight: 600;
-  font-size: 1.05rem;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Sombra para profundidad */
-  transition: all 0.3s ease;
-  
-}
-
-.buy-btn:hover:not(.checked) {
-    background-color: #0056b3;
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.5);
-    transform: translateY(-2px);
-}
-
-/* Estado 'Agregado' (Checked) */
-.buy-btn.checked {
-    background-color: #28a745; /* Verde de éxito */
+.tag {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: 600;
     color: white;
-    border: 1px solid #1e7e34;
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-    pointer-events: none; /* Deshabilitar clics rápidos para evitar doble-compra */
 }
 
+.tag.sugar { background-color: #f1c40f; } 
+.tag.tacc { background-color: #27ae60; } 
+.tag.vegan { background-color: #9b59b6; } 
 
-/* Media Query para Tablet (max-width: 1024px) */
-@media (max-width: 1024px) {
-    .product-grid-container {
-        /* Requisito Tablet: 3 productos por fila */
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 15px;
-    }
+
+/* ------------------- Botones de Acción ------------------- */
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    align-items: center;
 }
 
-/* Media Query para Celular (max-width: 600px) */
-@media (max-width: 600px) {
-    .product-grid-container {
-        /* Requisito Celular: 2 productos por fila */
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 10px;
-        padding: 10px;
-    }
-    
-    .buy-btn {
-        padding: 10px 15px; /* Ajuste para pantalla pequeña */
-        font-size: 1rem;
-    }
+.main-action-btn {
+    flex-grow: 1; 
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.main-action-btn:hover {
+    background-color: #0056b3;
+    transform: scale(0.99);
+}
+
+.main-action-btn:disabled {
+    background-color: #adb5bd;
+    cursor: not-allowed;
+    color: #495057;
+}
+
+/* Botón de Favorito (Ícono) */
+.icon-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    color: #777;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.icon-btn:hover {
+    background-color: #ffe0e0;
+    color: #dc3545; /* Rojo */
+}
+
+/* Estado Activo (Favorito) */
+.icon-btn.favorite-btn.active {
+    background-color: #dc3545; 
+    color: white;
+    border-color: #dc3545;
+}
+
+/* Mensaje de No Productos */
+.no-products-message {
+    padding: 40px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6c757d;
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 20px;
+    border: 1px dashed #ced4da;
 }
