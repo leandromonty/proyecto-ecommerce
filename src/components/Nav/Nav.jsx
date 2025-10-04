@@ -1,37 +1,62 @@
 // src/components/Nav/Nav.jsx
 import React from 'react';
 import './Nav.css';
+import { FaHeart, FaShoppingCart, FaFilter } from 'react-icons/fa'; // Importamos FaFilter
 
-const CART_ICON = '🛒';
-const FAVORITES_ICON = '❤️'; 
+const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount }) => {
+    
+    // Lista de enlaces de navegación
+    const navLinks = [
+        { name: 'Home', href: '#home' },
+        { name: 'Destacado', href: '#featured' },
+        { name: 'Contacto', href: '#contact' },
+    ];
 
+    return (
+        <nav className="main-nav-bar">
+            
+            {/* 1. Enlaces de Navegación (Visibles solo en Desktop) */}
+            <ul className="nav-links">
+                {navLinks.map((link) => (
+                    <li key={link.name}>
+                        <a href={link.href} className="nav-item">{link.name}</a>
+                    </li>
+                ))}
+            </ul>
 
-const Nav = ({ cartItemCount, onToggleCart, favoriteItemCount }) => {
-  return (
-    <nav className="nav-sticky nav-desktop">
-      <ul>
-        <li>Home</li>
-        <li>Destacado</li>
-        <li>Contacto</li>
-        
-        {/* Enlace de Favoritos con Badge */}
-        <li className="favorites-nav-item">
-            <span className="favorites-icon">{FAVORITES_ICON}</span> 
-            Favoritos
-            {/* Badge condicional para Favoritos */}
-            {favoriteItemCount > 0 && <span className="favorites-badge">{favoriteItemCount}</span>} 
-        </li>
-        
-        {/* Enlace del Carrito con Badge */}
-        <li onClick={onToggleCart} className="cart-nav-item">
-            <span className="cart-icon">{CART_ICON}</span> 
-            Carrito
-            {/* Badge condicional para Carrito */}
-            {cartItemCount > 0 && <span className="cart-badge">{cartItemCount}</span>} 
-        </li>
-      </ul>
-    </nav>
-  );
+            {/*  Íconos de Contadores y Filtro Móvil */}
+            <div className="nav-counters">
+                
+                {/* Ícono de Filtro  */}
+                { }
+                <div className="nav-icon-wrapper filter-wrapper" title="Filtrar Productos">
+                    <FaFilter className="nav-icon mobile-filter-icon" />
+                </div>
+                
+                {/* Contador de Favoritos */}
+                <div className="nav-icon-wrapper" title="Ver Favoritos">
+                    <FaHeart className="nav-icon" />
+                    {/* El contador se muestra solo si hay favoritos */}
+                    {favoriteItemCount > 0 && (
+                        <span className="counter favorite-counter">{favoriteItemCount}</span>
+                    )}
+                </div>
+
+                {/* Contador de Carrito  */}
+                <div 
+                    className="nav-icon-wrapper cart-wrapper" 
+                    onClick={onToggleCart} 
+                    title="Ver Carrito de Compras"
+                >
+                    <FaShoppingCart className="nav-icon" />
+                    {/* El contador se muestra solo si hay items en el carrito */}
+                    {cartItemCount > 0 && (
+                        <span className="counter cart-counter">{cartItemCount}</span>
+                    )}
+                </div>
+            </div>
+        </nav>
+    );
 };
 
 export default Nav;

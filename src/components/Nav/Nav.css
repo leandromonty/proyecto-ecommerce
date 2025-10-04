@@ -1,78 +1,108 @@
 /* src/components/Nav/Nav.css */
 
-/* Estilos para la barra de navegación */
-.nav-sticky {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.nav-sticky ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 60px;
-}
-
-.nav-sticky li {
-  padding: 0 1.5rem 0 1rem; 
-  font-weight: bold;
-  position: relative; 
-  cursor: pointer;
-}
-
-.nav-sticky li a {
-  color: #555;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.nav-sticky li a:hover {
-  color: #e0f2f7; 
-}
-
-/* --- Estilos de Badge (Contador) --- */
-
-.cart-badge, .favorites-badge {
-   
-    position: absolute;
-    top: 5px; 
-    
-   
-    right: -15px; 
-    
-    background-color: red; 
-    color: white;
-    
-    
-    border-radius: 50%;
-    
-  
-    padding: 3px 6px; 
-    min-width: 18px; 
-    height: 18px; 
-    
+.main-nav-bar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    
+    padding: 0 1rem;
+    background-color: #f7f9fc;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 800; 
+}
+
+/* ------------------- Enlaces de Navegación (Desktop) ------------------- */
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    padding: 15px 0;
+    display: block;
+    transition: color 0.2s, border-bottom 0.2s;
+}
+
+.nav-item:hover {
+    color: #007bff;
+    border-bottom: 3px solid #007bff;
+}
+
+/* ------------------- Contadores e Íconos ------------------- */
+.nav-counters {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-icon-wrapper {
+    position: relative;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.nav-icon-wrapper:hover {
+    transform: scale(1.05);
+}
+
+.nav-icon {
+    font-size: 1.3rem;
+    color: #555;
+}
+
+/* Estilo para el número flotante */
+.counter {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: #dc3545; 
+    color: white;
     font-size: 0.7rem;
     font-weight: bold;
-    line-height: 1; 
+    border-radius: 50%;
+    padding: 3px 6px;
+    line-height: 1;
+    min-width: 18px;
     text-align: center;
-    
-    z-index: 10;
+}
+
+/* Estilos para el ícono de filtro */
+.filter-wrapper {
+    display: none; 
 }
 
 
+/* ------------------- MEDIA QUERIES (Móvil) ------------------- */
 @media (max-width: 768px) {
-  .nav-desktop {
-    display: none;
-  }
+    
+    .main-nav-bar {
+        padding: 10px 1rem; 
+        justify-content: flex-end; 
+    }
+
+    /* Usamos menú de hamburguesa en Header */
+    .nav-links {
+        display: none;
+    }
+
+    /* Mostramos el ícono de filtro en móvil */
+    .filter-wrapper {
+        display: block; 
+    }
+    
+    .nav-icon-wrapper {
+        padding: 3px; 
+    }
+    
+    .nav-icon {
+        font-size: 1.5rem;
+    }
 }
