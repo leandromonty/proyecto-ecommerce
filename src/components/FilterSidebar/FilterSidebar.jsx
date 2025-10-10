@@ -3,47 +3,35 @@ import React, { useState } from 'react';
 import './FilterSidebar.css';
 import { FaChevronDown, FaChevronUp, FaFilter } from 'react-icons/fa'; 
 
-// Lista fija de categorías 
 const CATEGORIES = ['Todos', 'Tartas', 'Budines', 'Muffins', 'Postres Fríos'];
-
-//  MANEJA SU VISIBILIDAD MÓVIL
-const FilterSidebar = ({ filters, onCategoryChange, onCheckboxChange }) => {
+const FilterSidebar = ({ filters, onCategoryChange, onCheckboxChange, isSidebarOpen, onToggleSidebar }) => {
   
-  // Estado para la visibilidad del acordeón de filtros adicionales
+  // Estado para la visibilidad del acordeón 
   const [isCollapseOpen, setIsCollapseOpen] = useState(true); 
-  
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Alterna la visibilidad del acordeón
   const toggleCollapse = () => {
     setIsCollapseOpen(!isCollapseOpen);
   };
   
-  const toggleMobileSidebar = () => {
-    setIsMobileSidebarOpen(!isMobileSidebarOpen);
-  };
-  
-  // Maneja el clic en los checkboxes 
   const handleCheckboxClick = (e) => {
       onCheckboxChange(e.target.name, e.target.checked);
   };
   
 
   return (
-    <aside className={`filter-sidebar ${isMobileSidebarOpen ? 'mobile-open' : ''}`}>
+    <aside className={`filter-sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}> 
       
       {/* Botón para Abrir/Cerrar el Sidebar en Móvil */}
-      {/* Este botón solo es visible en móvil  */}
-      <button className="mobile-filter-toggle" onClick={toggleMobileSidebar}>
+      <button className="mobile-filter-toggle" onClick={onToggleSidebar}>
           <FaFilter /> 
-          {isMobileSidebarOpen ? ' Ocultar Filtros' : ' Mostrar Filtros'}
+          {isSidebarOpen ? ' Ocultar Filtros' : ' Mostrar Filtros'}
       </button>
 
       
       <div className="sidebar-content">
         <h2>Filtros</h2>
 
-        {/* --- 1. Botones de Categoria --- */}
+        {/* --- Botones de Categoria --- */}
         <section className="category-section">
             <h3 className="section-title">Categorías</h3>
             <div className="category-buttons">
@@ -106,7 +94,7 @@ const FilterSidebar = ({ filters, onCategoryChange, onCheckboxChange }) => {
         </section>
 
 
-        {/* --- Publicidad (Oculta en móvil) --- */}
+        {/* --- 3. Publicidad  --- */}
         <div className="ad-container">
             <p className="ad-title">PUBLICIDAD</p>
             <img 

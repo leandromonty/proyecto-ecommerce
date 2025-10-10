@@ -1,150 +1,312 @@
 /* src/components/ProductGrid/ProductGrid.css */
-.product-grid-container {
+
+.product-grid {
+    /* Por defecto, usamos 2 columnas  */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 25px; 
-    padding: 20px;
-    background-color: #f7f9fc; 
-    border-radius: 8px;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    padding: 10px;
 }
 
-/* ------------------- Diseño de la Tarjeta ------------------- */
+/* --- Media Query para TABLET  --- */
+@media (min-width: 768px) {
+    .product-grid {
+        /* Tablet: 3 productos por fila */
+        grid-template-columns: repeat(3, 1fr); 
+    }
+}
+
+/* --- Media Query para WEB  --- */
+@media (min-width: 1200px) {
+    .product-grid {
+        /* Web: 5 productos por fila */
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+
 .product-card {
-    background-color: white;
-    border: 1px solid #e0f0f5;
-    border-radius: 12px;
-    overflow: hidden; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
-    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: visible; 
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .product-card:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.product-image {
+.product-card img {
     width: 100%;
-    height: 200px;
-    object-fit: cover; 
-    border-bottom: 1px solid #eee;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
-.card-content {
-    padding: 15px;
-    flex-grow: 1;
+.product-info {
+    flex-grow: 1; 
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
-.product-name {
-    font-size: 1.3rem;
+.product-info h3 {
+    font-size: 1.1rem;
     color: #333;
-    margin: 0 0 10px 0;
-    font-weight: 700;
+    margin: 5px 0;
+    min-height: 40px; 
 }
 
 .product-price {
-    font-size: 1.6rem;
-    color: #007bff; 
-    margin: 10px 0;
+    font-size: 1.3rem;
+    color: #007bff;
+    font-weight: bold;
+    margin: 10px 0 15px 0;
 }
 
-/* --- Tags de Dieta --- */
+/* --- Etiquetas de Características --- */
 .product-tags {
     display: flex;
-    gap: 8px;
+    gap: 5px;
     margin-bottom: 10px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; 
+    justify-content: center;
 }
 
 .tag {
-    font-size: 0.75rem;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-weight: 600;
+    font-size: 0.7rem;
+    padding: 3px 6px;
+    border-radius: 4px;
     color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.tag.azucar { background-color: #ffc107; color: #333; }
+.tag.tacc { background-color: #28a745; }
+.tag.vegano { background-color: #6f42c1; }
+
+/* --- Control de Cantidad  --- */
+
+.add-to-cart-control {
+    width: 100%;
+    margin-top: auto; 
 }
 
-.tag.sugar { background-color: #f1c40f; } 
-.tag.tacc { background-color: #27ae60; } 
-.tag.vegan { background-color: #9b59b6; } 
-
-
-/* ------------------- Botones de Acción ------------------- */
-.card-actions {
+/* Contenedor cuando NO está en el carrito */
+.pre-add-controls {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
     align-items: center;
+    gap: 10px;
 }
 
-.main-action-btn {
-    flex-grow: 1; 
+/* Botón grande 'Agregar' */
+.add-btn.initial {
+    background-color: #7ab801;
     color: white;
     border: none;
-    padding: 12px 15px;
-    border-radius: 8px;
+    padding: 10px 15px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: bold;
+    transition: background-color 0.2s;
+    flex-grow: 2; 
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    transition: background-color 0.2s, transform 0.1s;
+    gap: 5px;
+    height: 40px; 
 }
 
-.main-action-btn:hover {
-    background-color: #0056b3;
-    transform: scale(0.99);
+.add-btn.initial:hover {
+    background-color: #5f9000;
 }
 
-.main-action-btn:disabled {
-    background-color: #adb5bd;
-    cursor: not-allowed;
-    color: #495057;
+
+/* --- Dropdown de Cantidad  --- */
+.quantity-dropdown-wrapper {
+    position: relative; 
+    flex-grow: 1; 
+    height: 40px;
 }
 
-/* Botón de Favorito (Ícono) */
-.icon-btn {
-    background-color: #f0f0f0;
+.quantity-dropdown-button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
     border: 1px solid #ccc;
-    color: #777;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.quantity-dropdown-button svg {
+    transition: transform 0.2s;
+}
+
+
+.quantity-dropdown-button.open svg {
+    transform: rotate(180deg);
+}
+
+.quantity-dropdown-menu {
+    position: absolute;
+    bottom: 100%; 
+    top: auto;
+    left: 0;
+    z-index: 30; 
+    width: 100%;
+    min-width: 120px; 
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 0 0; 
+    border-bottom: none; 
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); 
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: -1px; 
+}
+
+.dropdown-item {
+    padding: 8px 10px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-item.selected {
+    background-color: #e0f2f7;
+    font-weight: bold;
+}
+
+.quantity-dropdown-button.open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+
+/* --- Control de Cantidad cuando ya está en el carrito  --- */
+.quantity-selector.in-cart {
+    display: flex;
+    width: 100%; 
+    justify-content: space-between;
+    border: 1px solid #7ab801; 
+    border-radius: 4px;
+    overflow: hidden;
+    height: 40px; 
+}
+
+/* Botones +/- del selector */
+.quantity-selector button {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+    flex-grow: 0;
+}
+
+.quantity-selector button:hover {
+    background-color: #e0f2f7;
+}
+
+/* Texto de la cantidad  */
+.quantity-selector span {
+    flex-grow: 1; 
+    text-align: center;
+    padding: 8px 5px;
+    font-weight: bold;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    min-width: 40px;
+    color: #7ab801; 
+}
+.quantity-selector span .check-icon {
+    margin-right: 5px;
+}
+
+
+/* --- Ícono de Favorito --- */
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+    color: #ccc;
+    transition: color 0.2s, background-color 0.2s; 
+    z-index: 10;
+    width: 30px; 
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.icon-btn:hover {
-    background-color: #ffe0e0;
-    color: #dc3545; /* Rojo */
+.favorite-btn.active {
+    color: #7ab801; 
 }
 
-/* Estado Activo (Favorito) */
-.icon-btn.favorite-btn.active {
-    background-color: #dc3545; 
-    color: white;
-    border-color: #dc3545;
+.favorite-btn:hover {
+    color: #ff4545; 
+}
+.favorite-btn.active:hover {
+    color: #5f9000; 
+}
+.favorite-btn .check-icon {
+    font-size: 1.2rem; 
 }
 
-/* Mensaje de No Productos */
-.no-products-message {
-    padding: 40px;
-    text-align: center;
-    font-size: 1.2rem;
-    color: #6c757d;
-    background-color: #fff;
-    border-radius: 8px;
-    margin: 20px;
-    border: 1px dashed #ced4da;
+
+/* --- RESPONSIVIDAD --- */
+
+@media (max-width: 600px) {
+    .product-card {
+        flex-direction: row;
+        text-align: left;
+        padding: 10px;
+    }
+    
+    .product-card img {
+        width: 80px;
+        height: 80px;
+        margin-right: 15px;
+    }
+    
+    .product-info {
+        justify-content: space-between;
+    }
+
+    .pre-add-controls,
+    .quantity-selector.in-cart {
+        width: 100%;
+    }
+
+    .product-tags {
+        justify-content: flex-start;
+    }
 }

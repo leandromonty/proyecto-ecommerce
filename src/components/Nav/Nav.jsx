@@ -1,9 +1,9 @@
 // src/components/Nav/Nav.jsx
 import React from 'react';
 import './Nav.css';
-import { FaHeart, FaShoppingCart, FaFilter } from 'react-icons/fa'; // Importamos FaFilter
+import { FaHeart, FaShoppingCart, FaFilter } from 'react-icons/fa'; 
 
-const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount }) => {
+const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount, onToggleSidebar }) => {
     
     // Lista de enlaces de navegación
     const navLinks = [
@@ -15,7 +15,7 @@ const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount }) => {
     return (
         <nav className="main-nav-bar">
             
-            {/* 1. Enlaces de Navegación (Visibles solo en Desktop) */}
+            {/* Enlaces de Navegación */}
             <ul className="nav-links">
                 {navLinks.map((link) => (
                     <li key={link.name}>
@@ -24,32 +24,33 @@ const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount }) => {
                 ))}
             </ul>
 
-            {/*  Íconos de Contadores y Filtro Móvil */}
+            {/* Íconos de Contadores y Filtro Móvil */}
             <div className="nav-counters">
                 
-                {/* Ícono de Filtro  */}
-                { }
-                <div className="nav-icon-wrapper filter-wrapper" title="Filtrar Productos">
+                {/* Ícono de Filtro */}
+                <div 
+                    className="nav-icon-wrapper filter-wrapper" 
+                    title="Filtrar Productos"
+                    onClick={onToggleSidebar} 
+                >
                     <FaFilter className="nav-icon mobile-filter-icon" />
                 </div>
                 
                 {/* Contador de Favoritos */}
                 <div className="nav-icon-wrapper" title="Ver Favoritos">
                     <FaHeart className="nav-icon" />
-                    {/* El contador se muestra solo si hay favoritos */}
                     {favoriteItemCount > 0 && (
                         <span className="counter favorite-counter">{favoriteItemCount}</span>
                     )}
                 </div>
 
-                {/* Contador de Carrito  */}
+                {/* Contador de Carrito */}
                 <div 
                     className="nav-icon-wrapper cart-wrapper" 
                     onClick={onToggleCart} 
                     title="Ver Carrito de Compras"
                 >
                     <FaShoppingCart className="nav-icon" />
-                    {/* El contador se muestra solo si hay items en el carrito */}
                     {cartItemCount > 0 && (
                         <span className="counter cart-counter">{cartItemCount}</span>
                     )}

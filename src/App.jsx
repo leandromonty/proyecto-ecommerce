@@ -1,12 +1,12 @@
 // src/App.jsx
 
-import React, { useState, useMemo } from 'react';
-// Componentes de Estructura Principal 
+import React, { useState, useMemo, useCallback } from 'react';
+// Componentes de Estructura Principal
 import Header from './components/Header/Header';
 import Nav from './components/Nav/Nav';
 import Footer from './components/Footer/Footer';
 
-// Componentes de Contenido 
+// Componentes de Contenido
 import FeaturedSlider from './components/FeaturedSlider/FeaturedSlider';
 import FilterSidebar from './components/FilterSidebar/FilterSidebar';
 import ProductGrid from './components/ProductGrid/ProductGrid';
@@ -15,190 +15,191 @@ import Carrito from './components/Carrito/Carrito';
 
 import './App.css';
 
-// Datos de productos iniciales
+// --- DATOS INICIALES Y LÓGICA DE ESTADO CENTRAL ---
 const initialProducts = Array.from({ length: 15 }, (_, i) => ({
     id: i + 1,
     name: `Producto ${i + 1}`,
     image: `https://placehold.co/200?text=Producto+${i + 1}`,
-    price: (i + 1) * 100, // Precio como número
+    price: (i + 1) * 100, 
     category: ['Tartas', 'Budines', 'Muffins', 'Postres Fríos'][i % 4],
     conAzucar: i % 2 === 0, 
     sinTacc: i % 3 === 0,    
-    vegano: i % 5 === 0,    
+    vegano: i % 5 === 0,     
     isFavorite: false,
-    isInCart: false,
 }));
 
-// Productos Destacados 
 const featuredProducts = [
-    { id: 101, name: 'Tarta de Limón Clásica', image: 'https://placehold.co/300x200?text=Limon', price: 850, category: 'Tartas' },
-    { id: 102, name: 'Budín de Naranja y Chocolate', image: 'https://placehold.co/300x200?text=Naranja', price: 620, category: 'Budines' },
-    { id: 103, name: 'Muffins de Vainilla y Arándanos', image: 'https://placehold.co/300x200?text=Muffin', price: 400, category: 'Muffins' },
+    { id: 101, name: 'Tarta de Limón Clásica', image: 'https://placehold.co/300x200?text=Limon+Clasico', price: 950, category: 'Tartas', conAzucar: true, sinTacc: false, vegano: false },
+    { id: 102, name: 'Budín de Vainilla y Nuez', image: 'https://placehold.co/300x200?text=Vainilla+Nuez', price: 780, category: 'Budines', conAzucar: true, sinTacc: false, vegano: false },
+    { id: 103, name: 'Muffins de Chocolate Veganos', image: 'https://placehold.co/300x200?text=Muffins+Veganos', price: 1200, category: 'Muffins', conAzucar: true, sinTacc: false, vegano: true },
 ];
 
 
 function App() {
-    
+    // 1. Estado de Productos y Carrito
     const [products, setProducts] = useState(initialProducts);
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState([]); 
     const [isCartOpen, setIsCartOpen] = useState(false);
-    
-   
+
+    // 2. Estado de Filtros y Búsqueda
     const [filters, setFilters] = useState({
         category: 'Todos',
         conAzucar: false,
         sinTacc: false,
         vegano: false,
+        searchTerm: '',
     });
-    const [searchTerm, setSearchTerm] = useState(''); 
 
-  
+    // 3. Visibilidad del Sidebar Móvil
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
 
-    
-    const handleSearchChange = (term) => {
-        setSearchTerm(term);
-    };
+    //  visibilidad del Sidebar
+    const toggleSidebar = useCallback(() => { 
+        setIsSidebarOpen(prev => !prev);
+    }, []);
 
-    
-    const toggleItemState = (id, field) => {
+
+    // --- MANEJADORES DE ESTADO (CARRITO) ---
+
+    // Función universal para añadir/modificar/eliminar por cantidad
+       const handleUpdateCart = useCallback((productToModify, action = 'ADD', quantityChange = 1) => {
+        
+        if (!productToModify || typeof productToModify.price !== 'number' || productToModify.price <= 0) {
+            console.error("Error al añadir al carrito: Producto sin precio numérico válido.", productToModify);
+            return; 
+        }
+
+        const productKey = productToModify.id; 
+
+        setCartItems(prevItems => {
+            const existingItem = prevItems.find(item => item.id === productKey);
+
+            if (action === 'ADD') {
+                const newQuantity = existingItem ? existingItem.quantity + quantityChange : quantityChange;
+                
+                if (existingItem) {
+                    return prevItems.map(item =>
+                        item.id === productKey
+                            ? { ...item, quantity: newQuantity }
+                            : item
+                    );
+                } else {
+                    return [...prevItems, { ...productToModify, id: productKey, quantity: quantityChange }];
+                }
+                
+            } else if (action === 'REMOVE' && existingItem) {
+ 
+                const newQuantity = existingItem.quantity - quantityChange; 
+
+                if (newQuantity <= 0) {
+
+                    return prevItems.filter(item => item.id !== productKey);
+                } else {
+                    return prevItems.map(item =>
+                        item.id === productKey
+                            ? { ...item, quantity: newQuantity }
+                            : item
+                    );
+                }
+            } else if (action === 'DELETE') {
+
+                return prevItems.filter(item => item.id !== productKey);
+            }
+
+            return prevItems;
+        });
+        
+    }, []);
+
+
+    // botón de basura para eliminar completamente un producto 
+    const handleRemoveFromCartModal = useCallback((id) => {
+        setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    }, []);
+
+
+    // --- MANEJADORES DE ESTADO  ---
+
+    // A. Manejo de Favoritos
+    const handleToggleFavorite = useCallback((id) => {
         setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.id === id ? { ...product, [field]: !product[field] } : product
+            prevProducts.map(p =>
+                p.id === id ? { ...p, isFavorite: !p.isFavorite } : p
             )
         );
-    };
+    }, []);
+    
+    // B. Manejo del Modal de Carrito 
+    const toggleCartModal = useCallback(() => {
+        setIsCartOpen(prev => !prev);
+    }, []);
 
-    const handleToggleFavorite = (id) => toggleItemState(id, 'isFavorite');
-    const handleToggleCart = (id) => {
-        const product = products.find(p => p.id === id);
-        if (product.isInCart) {
-            handleRemoveFromCart(id);
-        } else {
-            handleAddToCart(product);
-        }
-        toggleItemState(id, 'isInCart');
-    };
+    // C. Manejo de filtros
+    const handleCategoryChange = useCallback((category) => {
+        setFilters(prevFilters => ({ ...prevFilters, category }));
+        if (window.innerWidth <= 768) toggleSidebar(); 
+    }, [toggleSidebar]);
 
-    // --- LÓGICA DE CARRITO ---
-
-    const toggleCartModal = () => setIsCartOpen(!isCartOpen);
-
-    const handleAddToCart = (product) => {
-        // Formatear el precio para el carrito (asumiendo que Carrito.jsx maneja el string)
-        const priceString = `$${product.price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-        
-        setCartItems(prevItems => [
-            ...prevItems,
-            { 
-                id: product.id, 
-                name: product.name, 
-                image: product.image, 
-                price: priceString 
-            }
-        ]);
-    };
-
-    const handleAddFeaturedToCart = (featuredProduct) => {
-        // Para productos destacados, los agregamos directamente al carrito
-        const priceString = `$${featuredProduct.price.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-        setCartItems(prevItems => [
-            ...prevItems,
-            { 
-                id: featuredProduct.id, 
-                name: featuredProduct.name, 
-                image: featuredProduct.image, 
-                price: priceString 
-            }
-        ]);
-  
-    };
-
-    const handleRemoveFromCart = (id) => {
-        setCartItems(prevItems => prevItems.filter(item => item.id !== id));
-    };
+    const handleCheckboxChange = useCallback((name, checked) => {
+        setFilters(prevFilters => ({ ...prevFilters, [name]: checked }));
+    }, []);
+    
+    // D. Manejo de búsqueda
+    const handleSearchChange = useCallback((searchTerm) => {
+        setFilters(prevFilters => ({ ...prevFilters, searchTerm: searchTerm.toLowerCase() }));
+    }, []);
 
     
-    const handleRemoveFromCartModal = (id) => {
-        // Remover del modal
-        handleRemoveFromCart(id);
-        
-        
-        if (products.some(p => p.id === id)) {
-            toggleItemState(id, 'isInCart');
-        }
-    }
-
-
-    // Contadores para el Nav
-    const cartItemCount = cartItems.length;
-    const favoriteItemCount = products.filter(p => p.isFavorite).length;
-
-    // --- LÓGICA DE FILTROS ---
-
-    const handleCategoryChange = (category) => {
-        setFilters(prevFilters => ({
-            ...prevFilters,
-            category: category,
-        }));
-    };
-
-    const handleCheckboxChange = (name, checked) => {
-        setFilters(prevFilters => ({
-            ...prevFilters,
-            [name]: checked,
-        }));
-    };
-
-
-    // LÓGICA DE FILTRADO Y BÚSQUEDA 
-
+    // --- LÓGICA DE FILTRADO ---
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
-            
             const categoryMatch = filters.category === 'Todos' || product.category === filters.category;
-            const conAzucarMatch = filters.conAzucar ? product.conAzucar : true;
-            const sinTaccMatch = filters.sinTacc ? product.sinTacc : true;
-            const veganoMatch = filters.vegano ? product.vegano : true;
-            
-            const checkboxMatch = conAzucarMatch && sinTaccMatch && veganoMatch;
-            
-          
-            const searchMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-            
-            return categoryMatch && checkboxMatch && searchMatch;
+            const conAzucarMatch = !filters.conAzucar || product.conAzucar;
+            const sinTaccMatch = !filters.sinTacc || product.sinTacc;
+            const veganoMatch = !filters.vegano || product.vegano;
+            const searchMatch = product.name.toLowerCase().includes(filters.searchTerm);
+
+            return categoryMatch && conAzucarMatch && sinTaccMatch && veganoMatch && searchMatch;
         });
-    }, [products, filters, searchTerm]); // Dependencia del nuevo estado de búsqueda
+    }, [products, filters]);
 
 
+    // --- CÁLCULOS ---
+    const favoriteItemCount = products.filter(p => p.isFavorite).length;
+    const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0); 
 
     return (
         <div className="App">
             
-            {/* Header ahora recibe el manejador de búsqueda */}
             <Header onSearchChange={handleSearchChange} /> 
             
             <Nav 
                 onToggleCart={toggleCartModal} 
-                cartItemCount={cartItemCount}
+                cartItemCount={cartItemCount} 
                 favoriteItemCount={favoriteItemCount} 
+                onToggleSidebar={toggleSidebar} 
             />
             
-            <FeaturedSlider products={featuredProducts} onAddToCart={handleAddFeaturedToCart} /> 
+            <FeaturedSlider 
+                products={featuredProducts} 
+                onUpdateCart={handleUpdateCart} 
+            /> 
 
             <div className="main-content-wrapper">
-                { }
                 <FilterSidebar 
                     filters={filters}
                     onCategoryChange={handleCategoryChange}
                     onCheckboxChange={handleCheckboxChange}
+                    isSidebarOpen={isSidebarOpen} 
+                    onToggleSidebar={toggleSidebar} 
                 />
                 
                 <main className="product-area">
-                    { }
                     <ProductGrid 
                         products={filteredProducts} 
                         onToggleFavorite={handleToggleFavorite}
-                        onToggleCart={handleToggleCart} 
+                        onUpdateCart={handleUpdateCart} 
+                        cartItems={cartItems} 
                     />
                     <Pagination />
                 </main>
@@ -210,7 +211,8 @@ function App() {
                 isOpen={isCartOpen} 
                 onClose={toggleCartModal} 
                 cartItems={cartItems} 
-                onRemoveFromCart={handleRemoveFromCartModal}
+                onUpdateCart={handleUpdateCart} 
+                onRemoveFromCart={handleRemoveFromCartModal} 
             />
         </div>
     );

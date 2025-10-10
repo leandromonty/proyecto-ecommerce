@@ -1,4 +1,6 @@
 /* src/components/Carrito/Carrito.css */
+
+/* --- Overlay y Contenedor Principal --- */
 .cart-modal-overlay {
     position: fixed;
     top: 0;
@@ -20,11 +22,12 @@
     max-height: 80vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3); 
     overflow: hidden; 
     font-family: 'Inter', sans-serif;
 }
 
+/* ---  Header  --- */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -45,34 +48,35 @@
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #666;
+    color: #999;
     transition: color 0.2s;
 }
 
 .close-btn:hover {
-    color: #000;
+    color: #333;
 }
 
-
-
+/* --- Lista de Items y Mensaje de Vacío --- */
 .cart-item-list {
     flex-grow: 1;
-    overflow-y: auto; 
-    padding: 15px 20px;
+    overflow-y: auto;
+    padding: 0 20px;
 }
 
 .empty-cart-message {
     text-align: center;
-    color: #888;
-    padding: 40px 0;
-    font-size: 1.1rem;
+    padding: 50px 20px;
+    color: #666;
+    font-style: italic;
 }
 
+/* --- Item Individual CON AJUSTES PARA (+/-) --- */
 .cart-item {
-    display: flex;
+    display: flex; 
     align-items: center;
+    justify-content: space-between; 
     padding: 10px 0;
-    border-bottom: 1px dashed #e0e0e0;
+    border-bottom: 1px solid #eee;
 }
 
 .cart-item:last-child {
@@ -89,6 +93,7 @@
 
 .item-details {
     flex-grow: 1;
+    margin-right: 15px;
 }
 
 .item-name {
@@ -98,13 +103,58 @@
     font-weight: 600;
 }
 
-.item-price {
-    margin: 5px 0 0 0;
-    font-size: 0.95rem;
+.item-price-unit {
+    margin: 3px 0 0 0;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.item-price-subtotal {
+    margin: 3px 0 0 0;
+    font-size: 1rem;
     color: #007bff;
     font-weight: bold;
 }
 
+
+/* --- Control de Cantidad (+ / -) --- */
+.item-quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 15px; 
+    user-select: none;
+}
+
+.quantity-btn {
+    background-color: #fff;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    line-height: 1; 
+    transition: background-color 0.2s;
+}
+
+.quantity-btn:hover {
+    background-color: #e0f2f7;
+}
+
+.quantity-count {
+    padding: 0 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    min-width: 20px;
+    text-align: center;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+
+/* --- Botón de Eliminar (Basura) --- */
 .remove-btn {
     background: none;
     border: none;
@@ -120,8 +170,7 @@
     transform: scale(1.1);
 }
 
-
-
+/* ---  Footer  --- */
 .modal-footer {
     padding: 15px 20px;
     border-top: 1px solid #eee;
@@ -136,7 +185,6 @@
     justify-content: space-between;
     font-size: 1.3rem;
     font-weight: bold;
-    color: #333;
 }
 
 .total-amount {
@@ -144,29 +192,58 @@
 }
 
 .checkout-btn {
-    background-color: #28a745; 
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 12px;
     border-radius: 6px;
+    cursor: pointer;
     font-size: 1.1rem;
     font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
+    transition: background-color 0.2s;
 }
 
 .checkout-btn:hover {
-    background-color: #1e7e34;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #0056b3;
 }
 
-
-@media (max-width: 600px) {
+/* --- Media Query para Móvil --- */
+@media (max-width: 500px) {
     .cart-modal-content {
-        width: 100%;
-        margin: 0;
-        border-radius: 0; 
-        height: 100vh;
+        max-width: 100%;
         max-height: 100vh;
+        width: 100%;
+        border-radius: 0;
+    }
+    
+    .cart-item {
+        flex-wrap: wrap; 
+        justify-content: flex-start;
+    }
+    
+    .item-image {
+        margin-bottom: 10px;
+        order: 1; 
+        flex-shrink: 0;
+    }
+
+    .item-details {
+        flex-basis: 100%; 
+        margin-right: 0;
+        margin-bottom: 10px;
+        order: 2; 
+    }
+
+    .item-quantity-control {
+        margin-top: 5px;
+        margin-left: 0;
+        order: 3; 
+    }
+
+    .remove-btn {
+        margin-top: 5px;
+        margin-left: 0;
+        order: 4;
+        margin-left: auto; 
     }
 }
