@@ -70,7 +70,7 @@ function App() {
 
     const handleSearchChange = useCallback((query) => {
         setSearchQuery(query.toLowerCase());
-        setCurrentPage(1); // Resetear a la página 1 en cada búsqueda
+        setCurrentPage(1); 
     }, []);
 
     const handleCategoryChange = useCallback((category) => {
@@ -82,7 +82,7 @@ function App() {
                 return acc;
             }, {}),
         }));
-        setCurrentPage(1); // Resetear a la página 1 al cambiar filtro
+        setCurrentPage(1); 
     }, []);
 
     const handleCheckboxChange = useCallback((key) => {
@@ -90,7 +90,7 @@ function App() {
             ...prev,
             [key]: !prev[key],
         }));
-        setCurrentPage(1); // Resetear a la página 1 al cambiar filtro
+        setCurrentPage(1);
     }, []);
 
     // --- MANEJADORES DE CARRITO Y FAVORITOS ---
@@ -188,7 +188,11 @@ function App() {
     // --- RENDERIZADO ---
     return (
         <div className="app-container">
-            <Header onSearchChange={handleSearchChange} />
+            <Header onSearchChange={handleSearchChange} 
+                onToggleCart={toggleCartModal}
+                onToggleSidebar={toggleSidebar}
+                cartItemCount={cartItemCount}
+            />
             <Nav 
                 onToggleCart={toggleCartModal} 
                 cartItemCount={cartItemCount} 
