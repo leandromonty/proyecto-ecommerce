@@ -1,110 +1,90 @@
 // src/components/FilterSidebar/FilterSidebar.jsx
 import React, { useState } from 'react';
 import './FilterSidebar.css';
-import { FaChevronDown, FaChevronUp, FaFilter } from 'react-icons/fa'; 
+import { IoIosArrowDown } from 'react-icons/io';
 
-const CATEGORIES = ['Todos', 'Tartas', 'Budines', 'Muffins', 'Postres Fríos'];
-const FilterSidebar = ({ filters, onCategoryChange, onCheckboxChange, isSidebarOpen, onToggleSidebar }) => {
-  
-  // Estado para la visibilidad del acordeón 
-  const [isCollapseOpen, setIsCollapseOpen] = useState(true); 
+const FilterSection = ({ title, children, initialOpen = true }) => {
+    const [isOpen, setIsOpen] = useState(initialOpen);
 
-  const toggleCollapse = () => {
-    setIsCollapseOpen(!isCollapseOpen);
-  };
-  
-  const handleCheckboxClick = (e) => {
-      onCheckboxChange(e.target.name, e.target.checked);
-  };
-  
+    const toggleOpen = () => setIsOpen(!isOpen);
 
-  return (
-    <aside className={`filter-sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}> 
-      
-      {/* Botón para Abrir/Cerrar el Sidebar en Móvil */}
-      <button className="mobile-filter-toggle" onClick={onToggleSidebar}>
-          <FaFilter /> 
-          {isSidebarOpen ? ' Ocultar Filtros' : ' Mostrar Filtros'}
-      </button>
-
-      
-      <div className="sidebar-content">
-        <h2>Filtros</h2>
-
-        {/* --- Botones de Categoria --- */}
-        <section className="category-section">
-            <h3 className="section-title">Categorías</h3>
-            <div className="category-buttons">
-            {CATEGORIES.map(category => (
-                <button 
-                    key={category}
-                    className={`category-btn ${filters.category === category ? 'active' : ''}`}
-                    onClick={() => onCategoryChange(category)}
-                >
-                    {category}
-                </button>
-            ))}
-            </div>
-        </section>
-
-
-        {/* --- Acordeón para Filtros Adicionales --- */}
-        <section className="filter-collapse">
-            <button className="collapse-header" onClick={toggleCollapse}>
-            <span className="collapse-title">Dietas y Extras</span>
-            {isCollapseOpen ? <FaChevronUp /> : <FaChevronDown />}
+    return (
+        <div className="filter-section">
+            <button className="collapse-toggle" onClick={toggleOpen}>
+                <h4 className="section-title">{title}</h4>
+                <IoIosArrowDown className={`toggle-icon ${isOpen ? 'open' : ''}`} />
             </button>
-            
-            {isCollapseOpen && (
-            <div className="collapse-content">
-                {/* Checkbox para Con Azúcar */}
-                <label className="checkbox-label">
-                    <input 
-                        type="checkbox" 
-                        name="conAzucar" 
-                        checked={filters.conAzucar}
-                        onChange={handleCheckboxClick}
-                    /> 
-                    Con Azúcar
-                </label>
-                
-                {/* Checkbox para Sin TACC */}
-                <label className="checkbox-label">
-                    <input 
-                        type="checkbox" 
-                        name="sinTacc" 
-                        checked={filters.sinTacc}
-                        onChange={handleCheckboxClick}
-                    /> 
-                    Sin TACC
-                </label>
-                
-                {/* Checkbox para Vegano */}
-                <label className="checkbox-label">
-                    <input 
-                        type="checkbox" 
-                        name="vegano" 
-                        checked={filters.vegano}
-                        onChange={handleCheckboxClick}
-                    /> 
-                    Vegano
-                </label>
+            <div className={`section-content ${isOpen ? 'open' : 'closed'}`}>
+                {children}
             </div>
-            )}
-        </section>
-
-
-        {/* --- 3. Publicidad  --- */}
-        <div className="ad-container">
-            <p className="ad-title">PUBLICIDAD</p>
-            <img 
-            src="https://via.placeholder.com/250x400/e0f2f7/007bff?text=Tu+Anuncio+Aqui" 
-            alt="Publicidad de La Celestina" 
-            />
         </div>
-      </div>
-    </aside>
-  );
+    );
+};
+
+const FilterSidebar = ({ 
+    filters, 
+    onCategoryChange, 
+    onCheckboxChange, 
+    isSidebarOpen, 
+    onToggleSidebar 
+}) => {
+    
+ 
+    const categories = Object.keys(filters.categories);
+    const checkboxFilters = ['conAzucar', 'sinTacc', 'vegano']; 
+
+    return (
+        <aside className={`filter-sidebar ${isSidebarOpen ? 'open' : ''}`}>
+            {/* Botón de cierre para móvil */}
+            <button className="close-sidebar-btn" onClick={onToggleSidebar}>×</button>
+            
+            <FilterSection title="Categorías" initialOpen={true}>
+                {/* Botones de Categorías en Bloque */}
+                <div className="category-buttons">
+                    <button 
+                        className={`category-btn ${filters.category === '' ? 'active' : ''}`}
+                        onClick={() => onCategoryChange('')}
+                    >
+                        Todas
+                    </button>
+                    {categories.map(category => (
+                        <button
+                            key={category}
+                            className={`category-btn ${filters.category === category ? 'active' : ''}`}
+                            onClick={() => onCategoryChange(category)}
+                        >
+                            {category}
+                        </button>
+                    ))}
+                </div>
+            </FilterSection>
+            
+            {/* Separador */}
+            <hr />
+
+            <FilterSection title="Características" initialOpen={true}>
+                {/* Checkboxes de Filtros */}
+                <div className="checkbox-filters">
+                    {checkboxFilters.map(filterKey => (
+                        <div key={filterKey} className="checkbox-item">
+                            <input 
+                                type="checkbox"
+                                id={filterKey}
+                                name={filterKey}
+                                checked={filters[filterKey]}
+                                onChange={() => onCheckboxChange(filterKey)}
+                            />
+                            <label htmlFor={filterKey}>
+                                {filterKey === 'conAzucar' ? 'Con Azúcar' : 
+                                 filterKey === 'sinTacc' ? 'Sin TACC' : 
+                                 'Vegano'}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+            </FilterSection>
+        </aside>
+    );
 };
 
 export default FilterSidebar;

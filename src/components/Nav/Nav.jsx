@@ -1,7 +1,8 @@
 // src/components/Nav/Nav.jsx
-import React from 'react';
+import React, { useCallback } from 'react';
 import './Nav.css';
-import { FaHeart, FaShoppingCart, FaFilter } from 'react-icons/fa'; 
+// Importamos FaQuestionCircle para el ícono de ayuda
+import { FaHeart, FaShoppingCart, FaFilter, FaQuestionCircle } from 'react-icons/fa'; 
 
 const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount, onToggleSidebar }) => {
     
@@ -11,6 +12,12 @@ const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount, onToggleSidebar }
         { name: 'Destacado', href: '#featured' },
         { name: 'Contacto', href: '#contact' },
     ];
+
+    // NUEVO: Manejador para el ícono de Ayuda
+    const handleHelpClick = useCallback(() => {
+        // En un proyecto real, esto abriría un modal de soporte o redirigiría a la página de FAQ/Ayuda.
+        alert("¡Hola! ¿Necesitas ayuda? Puedes contactarnos en contacto@lacelestina.com o visitar la sección FAQ en el Footer.");
+    }, []);
 
     return (
         <nav className="main-nav-bar">
@@ -24,10 +31,10 @@ const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount, onToggleSidebar }
                 ))}
             </ul>
 
-            {/* Íconos de Contadores y Filtro Móvil */}
+            {/* Íconos de Contadores, Filtro Móvil y Ayuda */}
             <div className="nav-counters">
                 
-                {/* Ícono de Filtro */}
+                {/* Ícono de Filtro (Móvil) */}
                 <div 
                     className="nav-icon-wrapper filter-wrapper" 
                     title="Filtrar Productos"
@@ -54,6 +61,15 @@ const Nav = ({ onToggleCart, cartItemCount, favoriteItemCount, onToggleSidebar }
                     {cartItemCount > 0 && (
                         <span className="counter cart-counter">{cartItemCount}</span>
                     )}
+                </div>
+
+                {/* NUEVO: Ícono de Ayuda */}
+                <div 
+                    className="nav-icon-wrapper help-wrapper" 
+                    onClick={handleHelpClick} 
+                    title="Ayuda / Soporte"
+                >
+                    <FaQuestionCircle className="nav-icon help-icon" />
                 </div>
             </div>
         </nav>

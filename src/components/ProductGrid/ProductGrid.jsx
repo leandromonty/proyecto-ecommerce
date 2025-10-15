@@ -1,7 +1,7 @@
 // src/components/ProductGrid/ProductGrid.jsx
 import React, { useState } from 'react';
 import './ProductGrid.css';
-import { FaHeart, FaShoppingCart, FaCheck } from 'react-icons/fa'; // Importamos FaCheck
+import { FaHeart, FaShoppingCart, FaCheck } from 'react-icons/fa'; 
 import { IoIosArrowDown } from 'react-icons/io'; 
 
 const QUANTITY_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20];
@@ -15,25 +15,21 @@ const ProductGrid = ({ products, onToggleFavorite, onUpdateCart, cartItems }) =>
         return <div className="no-results-message">No se encontraron productos que coincidan con los filtros.</div>;
     }
     
-    // Handler para cambiar la cantidad local (Dropdown)
     const handleQuantityChangeLocal = (productId, newQuantity) => {
         setQuantities(prev => ({ ...prev, [productId]: newQuantity }));
         setOpenDropdownId(null); 
     };
 
-    // Handler para añadir el producto (Primer click en 'Agregar')
     const handleAddInitial = (product) => {
         const quantity = quantities[product.id] || 1;
         onUpdateCart(product, 'ADD', quantity);
     };
 
-    // Handler para cambiar la cantidad EN EL CARRITO (Usando el control + / -)
     const handleUpdateCartQuantity = (product, change) => {
         const action = change > 0 ? 'ADD' : 'REMOVE';
         onUpdateCart(product, action, Math.abs(change)); 
     };
     
-    // Toggle del dropdown de cantidad
     const toggleDropdown = (productId) => {
         if (!quantities[productId]) {
             setQuantities(prev => ({ ...prev, [productId]: 1 }));
@@ -66,7 +62,7 @@ const ProductGrid = ({ products, onToggleFavorite, onUpdateCart, cartItems }) =>
                             onClick={() => onToggleFavorite(product.id)}
                             title={product.isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
                         >
-                            { }
+                            {/* Si es favorito, mostramos el tilde, sino, el corazón */}
                             {product.isFavorite ? <FaCheck className="check-icon" /> : <FaHeart />} 
                         </button>
                         
@@ -88,7 +84,7 @@ const ProductGrid = ({ products, onToggleFavorite, onUpdateCart, cartItems }) =>
                             <div className="add-to-cart-control">
                                 
                                 {itemInCart ? (
-                                    /* El producto YA ESTÁ en el carrito (Control de cantidad compacto) */
+
                                     <div className="quantity-selector in-cart">
                                         {/* Botón Restar */}
                                         <button 
@@ -96,7 +92,7 @@ const ProductGrid = ({ products, onToggleFavorite, onUpdateCart, cartItems }) =>
                                         >
                                             -
                                         </button>
-                                   
+                                        {/* Tilde + Cantidad - Feedback Visual de que ya está en el carrito */}
                                         <span className="cart-qty">
                                             <FaCheck className="check-icon" /> {currentCartQuantity} un
                                         </span>
@@ -108,9 +104,9 @@ const ProductGrid = ({ products, onToggleFavorite, onUpdateCart, cartItems }) =>
                                         </button>
                                     </div>
                                 ) : (
-                                    /* Dropdown + Botón de Añadir */
+                                    /* Dropdown + Botón de Añadir  */
                                     <div className="pre-add-controls">
-                                        {/* Dropdown de Cantidad Inicial */}
+                                   
                                         <div className="quantity-dropdown-wrapper">
                                             <button 
                                                 className={`quantity-dropdown-button ${isDropdownOpen ? 'open' : ''}`}

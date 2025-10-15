@@ -1,14 +1,14 @@
 /* src/components/ProductGrid/ProductGrid.css */
 
 .product-grid {
-    /* Por defecto, usamos 2 columnas  */
+    /* Por defecto, 2 columnas (para móvil) */
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
     gap: 20px;
     padding: 10px;
 }
 
-/* --- Media Query para TABLET  --- */
+/* --- Media Query para TABLET (A partir de 768px) --- */
 @media (min-width: 768px) {
     .product-grid {
         /* Tablet: 3 productos por fila */
@@ -16,7 +16,7 @@
     }
 }
 
-/* --- Media Query para WEB  --- */
+/* --- Media Query para WEB (A partir de 1200px, para 5 columnas) --- */
 @media (min-width: 1200px) {
     .product-grid {
         /* Web: 5 productos por fila */
@@ -94,14 +94,13 @@
 .tag.tacc { background-color: #28a745; }
 .tag.vegano { background-color: #6f42c1; }
 
-/* --- Control de Cantidad  --- */
+/* --- Control de Cantidad (Switch) --- */
 
 .add-to-cart-control {
     width: 100%;
     margin-top: auto; 
 }
 
-/* Contenedor cuando NO está en el carrito */
 .pre-add-controls {
     display: flex;
     align-items: center;
@@ -157,7 +156,6 @@
 .quantity-dropdown-button svg {
     transition: transform 0.2s;
 }
-
 
 .quantity-dropdown-button.open svg {
     transform: rotate(180deg);
@@ -230,7 +228,7 @@
     background-color: #e0f2f7;
 }
 
-/* Texto de la cantidad  */
+
 .quantity-selector span {
     flex-grow: 1; 
     text-align: center;
@@ -282,9 +280,10 @@
 }
 
 
-/* --- RESPONSIVIDAD --- */
+/* --- RESPONSIVIDAD  --- */
 
 @media (max-width: 600px) {
+  
     .product-card {
         flex-direction: row;
         text-align: left;
