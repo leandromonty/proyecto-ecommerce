@@ -49,24 +49,31 @@ a {
     flex-grow: 1; 
 }
 
-.product-area {
-    flex-grow: 1;
-    min-width: 0; 
+/* ⬅️ CLAVE: Contenedor para que Filtros y Publicidad se apilen verticalmente */
+.filter-ad-stack {
+    display: flex;
+    flex-direction: column; /* Esto apila FilterSidebar encima de AdSidebar */
+    gap: 20px; /* Espacio entre los filtros y el anuncio */
 }
 
-/* --- Media Query para el Layout de 3 Columnas (Web: > 1200px) --- */
+.product-area {
+    flex-grow: 1;
+    min-width: 0; /* Asegura que no se desborde el contenido */
+}
+
+
+/* --- Media Query para el Layout de 2 Columnas (Web: > 1200px) --- */
 @media (min-width: 1200px) {
     .main-content-wrapper {
-        /* WEB: Aplicar CSS GRID para 3 columnas */
+        /* WEB: Aplicar CSS GRID para 2 COLUMNAS (Stack de Filtros/Ad | Productos) */
         display: grid;
-        grid-template-columns: 250px 1fr; /* Filtros | Productos | Publicidad */
+        /* El sidebar (stack) tiene 250px, y el área de productos el resto (1fr) */
+        grid-template-columns: 250px 1fr; 
         gap: 30px;
     }
-
-    .product-area {
-        /* Ocupa el carril central */
-        grid-column: 2 / 3;
-    }
+    
+    /* En este grid de 2 columnas, .filter-ad-stack ocupa la columna 1, y 
+       .product-area ocupa la columna 2, por defecto. */
 }
 
 
@@ -76,27 +83,38 @@ a {
     text-align: center;
     padding: 50px 20px;
     font-size: 1.2rem;
-    color: #555;
+    color: #6c757d;
     background-color: white;
     border-radius: 8px;
     margin-top: 20px;
 }
 
-/* --- ESTILOS PARA MODALS/OVERLAYS (Carrito) --- */
+/* --- ESTILOS DE ORDENAMIENTO (sort-controls) --- */
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 50; 
+.sort-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinear a la derecha */
+    margin-bottom: 20px;
+    gap: 10px;
 }
 
-/* Estilos de Pagination (Aún no detallados, solo estructura) */
-.pagination-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
+.sort-controls label {
+    font-weight: 600;
+    color: #333;
+}
+
+.sort-controls select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #555;
+}
+
+.sort-controls select:focus {
+    outline: 2px solid #007bff;
+    border-color: #007bff;
 }

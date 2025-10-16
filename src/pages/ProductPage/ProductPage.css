@@ -1,0 +1,302 @@
+/* src/pages/ProductPage/ProductPage.css */
+
+.product-page-container {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.product-card-detail {
+    display: grid;
+    /* Layout: 2 columnas principales (imagen + info) y 1 columna de especificaciones */
+    grid-template-columns: 1fr 1.5fr 0.8fr; 
+    gap: 40px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* -------------------- SECCIÓN IMAGEN -------------------- */
+.product-image-section {
+    grid-column: 1 / 2;
+    text-align: center;
+}
+
+.main-product-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* -------------------- SECCIÓN INFO PRINCIPAL -------------------- */
+.product-info-section {
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-info-section h1 {
+    font-size: 2.2rem;
+    color: #333;
+    margin-top: 0;
+}
+
+.rating-stock {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.stock-status.in-stock {
+    color: green;
+    font-weight: bold;
+}
+
+.product-description {
+    line-height: 1.7;
+    color: #444;
+}
+
+.price-sku {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 20px 0;
+}
+
+.current-price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.sku-id {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.product-info-section hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* --- CONTROLES DE COMPRA --- */
+.purchase-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.quantity-selector-lg {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 50px;
+}
+
+.quantity-selector-lg button {
+    background: #f7f9fc;
+    color: #333;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.quantity-selector-lg button:hover:not(:disabled) {
+    background-color: #e0e0e0;
+}
+
+.quantity-selector-lg span {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+}
+
+/* Botón de Añadir */
+.add-to-cart-btn {
+    flex-grow: 1;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s, transform 0.2s;
+    height: 50px;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.add-to-cart-btn.added {
+    background-color: #7ab801; /* Color verde para el tilde */
+}
+
+/* Botón de Favorito */
+.favorite-btn-lg {
+    background-color: #f7f9fc;
+    border: 1px solid #ccc;
+    color: #ccc;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.favorite-btn-lg.active {
+    color: #ff4545;
+    border-color: #ff4545;
+    background-color: #fff0f0;
+}
+
+.favorite-btn-lg:hover {
+    color: #ff4545;
+    border-color: #ff4545;
+}
+
+/* Shipping and Guarantees */
+.shipping-guarantees {
+    display: flex;
+    gap: 30px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.shipping-guarantees div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* -------------------- SECCIÓN ESPECIFICACIONES (Sidebar) -------------------- */
+.product-specs-sidebar {
+    grid-column: 3 / 4;
+    padding: 20px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    height: fit-content;
+    border: 1px solid #eee;
+}
+
+.product-specs-sidebar h3 {
+    color: #007bff;
+    border-bottom: 2px solid #e0f2f7;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.product-specs-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.product-specs-sidebar li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 0.95rem;
+}
+
+.contact-seller-btn {
+    width: 100%;
+    background-color: #ffc107;
+    color: #333;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.contact-seller-btn:hover {
+    background-color: #ffcd39;
+}
+
+
+/* -------------------- RESPONSIVIDAD MÓVIL/TABLET -------------------- */
+@media (max-width: 1024px) {
+    .product-card-detail {
+        /* Tablet: 2 columnas principales (Info abajo de Imagen), Specs se oculta o va abajo */
+        grid-template-columns: 1fr 1fr; 
+        gap: 30px;
+    }
+    
+    .product-image-section {
+        grid-column: 1 / 3; /* Imagen ocupa todo el ancho superior */
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .product-info-section {
+        grid-column: 1 / 3; /* Info ocupa todo el ancho central */
+    }
+
+    .product-specs-sidebar {
+        grid-column: 1 / 3; /* Specs va al final y ocupa todo el ancho */
+    }
+}
+
+@media (max-width: 600px) {
+    .product-page-container {
+        padding: 0 10px;
+    }
+    .product-card-detail {
+        padding: 20px 10px;
+        gap: 20px;
+    }
+    
+    .current-price {
+        font-size: 2rem;
+    }
+    
+    .purchase-controls {
+        flex-wrap: wrap; /* En móvil, los controles pueden saltar de línea */
+    }
+    
+    .quantity-selector-lg {
+        flex-grow: 1; 
+        max-width: 120px;
+    }
+
+    .add-to-cart-btn {
+        flex-grow: 1; /* El botón de añadir ocupa el resto del espacio */
+        width: auto;
+    }
+    
+    .favorite-btn-lg {
+        height: 40px;
+        width: 40px;
+        padding: 10px;
+    }
+    
+    .shipping-guarantees {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

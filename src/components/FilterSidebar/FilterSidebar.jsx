@@ -1,8 +1,12 @@
-// src/components/FilterSidebar/FilterSidebar.jsx
 import React, { useState } from 'react';
 import './FilterSidebar.css';
 import { IoIosArrowDown } from 'react-icons/io';
 
+// --- LISTA DE CATEGORÍAS (Debe coincidir con App.jsx) ---
+const CATEGORY_LIST = ['Tartas', 'Budines', 'Muffins', 'Postres Fríos'];
+
+
+// --- COMPONENTE COLAPSIBLE REUTILIZABLE (FilterSection) ---
 const FilterSection = ({ title, children, initialOpen = true }) => {
     const [isOpen, setIsOpen] = useState(initialOpen);
 
@@ -21,8 +25,10 @@ const FilterSection = ({ title, children, initialOpen = true }) => {
     );
 };
 
+
+// --- COMPONENTE PRINCIPAL (FilterSidebar) ---
 const FilterSidebar = ({ 
-    filters, 
+    filters, // { category: 'Tartas', conAzucar: false, ... }
     onCategoryChange, 
     onCheckboxChange, 
     isSidebarOpen, 
@@ -30,26 +36,21 @@ const FilterSidebar = ({
 }) => {
     
  
-    const categories = Object.keys(filters.categories);
+    // Lista de las claves de los filtros checkbox
     const checkboxFilters = ['conAzucar', 'sinTacc', 'vegano']; 
 
     return (
         <aside className={`filter-sidebar ${isSidebarOpen ? 'open' : ''}`}>
             {/* Botón de cierre para móvil */}
             <button className="close-sidebar-btn" onClick={onToggleSidebar}>×</button>
-            
+
+            {/* Filtro por Categorías */}
             <FilterSection title="Categorías" initialOpen={true}>
-                {/* Botones de Categorías en Bloque */}
                 <div className="category-buttons">
-                    <button 
-                        className={`category-btn ${filters.category === '' ? 'active' : ''}`}
-                        onClick={() => onCategoryChange('')}
-                    >
-                        Todas
-                    </button>
-                    {categories.map(category => (
+                    {CATEGORY_LIST.map(category => ( 
                         <button
                             key={category}
+                            // 'filters.category' es el filtro activo, lo comparamos con el botón
                             className={`category-btn ${filters.category === category ? 'active' : ''}`}
                             onClick={() => onCategoryChange(category)}
                         >
@@ -62,8 +63,8 @@ const FilterSidebar = ({
             {/* Separador */}
             <hr />
 
+            {/* Filtro de Checkboxes */}
             <FilterSection title="Características" initialOpen={true}>
-                {/* Checkboxes de Filtros */}
                 <div className="checkbox-filters">
                     {checkboxFilters.map(filterKey => (
                         <div key={filterKey} className="checkbox-item">
@@ -71,8 +72,8 @@ const FilterSidebar = ({
                                 type="checkbox"
                                 id={filterKey}
                                 name={filterKey}
-                                checked={filters[filterKey]}
-                                onChange={() => onCheckboxChange(filterKey)}
+                                checked={filters[filterKey]} // Lee el valor booleano del estado 'filters'
+                                onChange={() => onCheckboxChange(filterKey)} // Envía la clave para cambiar el estado
                             />
                             <label htmlFor={filterKey}>
                                 {filterKey === 'conAzucar' ? 'Con Azúcar' : 

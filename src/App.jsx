@@ -12,14 +12,14 @@ import FilterSidebar from './components/FilterSidebar/FilterSidebar';
 import ProductGrid from './components/ProductGrid/ProductGrid';
 import Pagination from './components/Pagination/Pagination'; 
 import Carrito from './components/Carrito/Carrito'; 
-import AdSidebar from './components/AdSidebar/AdSidebar'; 
+import AdSidebar from './components/AdSidebar/AdSidebar'; // Componente de publicidad
 
 import './App.css';
 
 // --- DATOS INICIALES Y LÓGICA DE ESTADO CENTRAL ---
 
 // CONSTANTE CLAVE PARA PAGINACIÓN
-const ITEMS_PER_PAGE = 15; // 3 filas de 5 productos
+const ITEMS_PER_PAGE = 15; // 3 filas de 5 productos (Web)
 
 const initialProducts = Array.from({ length: 35 }, (_, i) => ({ 
     id: i + 1,
@@ -33,31 +33,28 @@ const initialProducts = Array.from({ length: 35 }, (_, i) => ({
     isFavorite: false,
 }));
 
-const featuredProducts = [
-    { id: 101, name: 'Tarta de Frutilla', image: 'https://placehold.co/300?text=Tarta+Frutilla', price: 1500 },
-    { id: 102, name: 'Budín de Limón', image: 'https://placehold.co/300?text=Budin+Limon', price: 900 },
-    { id: 103, name: 'Muffin de Chocolate', image: 'https://placehold.co/300?text=Muffin+Choco', price: 400 },
-];
+const featuredProducts = initialProducts.slice(0, 5);
+const allCategories = ['Todo', ...new Set(initialProducts.map(p => p.category))];
 
-const initialFilters = {
-    category: 'Todos',
-    categories: { 'Todos': true, 'Tartas': false, 'Budines': false, 'Muffins': false, 'Postres Fríos': false },
-    conAzucar: false,
-    sinTacc: false,
-    vegano: false,
-};
 
 function App() {
+    // --- ESTADO GLOBAL ---
     const [products, setProducts] = useState(initialProducts);
+    const [filters, setFilters] = useState({ 
+        category: 'Todo', 
+        conAzucar: false, 
+        sinTacc: false, 
+        vegano: false,
+        search: '' 
+    });
+    const [sortOrder, setSortOrder] = useState('default'); // 'default', 'price-asc', 'price-desc'
     const [cartItems, setCartItems] = useState([]);
-    const [filters, setFilters] = useState(initialFilters);
-    const [searchQuery, setSearchQuery] = useState('');
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Para el sidebar de filtros en móvil
     
-    // ESTADO CLAVE PARA PAGINACIÓN
-    const [currentPage, setCurrentPage] = useState(1); 
-
+    // --- ESTADO DE PAGINACIÓN ---
+    const [currentPage, setCurrentPage] = useState(1);
+    
     // --- MANEJADORES DE ESTADO ---
 
     const toggleCartModal = useCallback(() => {
@@ -68,131 +65,121 @@ function App() {
         setIsSidebarOpen(prev => !prev);
     }, []);
 
-    const handleSearchChange = useCallback((query) => {
-        setSearchQuery(query.toLowerCase());
-        setCurrentPage(1); 
+    const handleSearchChange = useCallback((newSearchTerm) => {
+        setFilters(prev => ({ ...prev, search: newSearchTerm }));
+        setCurrentPage(1); // Resetear a la primera página
     }, []);
 
-    const handleCategoryChange = useCallback((category) => {
-        setFilters(prev => ({
-            ...prev,
-            category,
-            categories: Object.keys(prev.categories).reduce((acc, cat) => {
-                acc[cat] = cat === category;
-                return acc;
-            }, {}),
-        }));
-        setCurrentPage(1); 
+    const handleCategoryChange = useCallback((newCategory) => {
+        setFilters(prev => ({ ...prev, category: newCategory }));
+        setCurrentPage(1); // Resetear a la primera página
     }, []);
 
-    const handleCheckboxChange = useCallback((key) => {
-        setFilters(prev => ({
-            ...prev,
-            [key]: !prev[key],
-        }));
-        setCurrentPage(1);
+    const handleCheckboxChange = useCallback((filterKey) => {
+        setFilters(prev => ({ ...prev, [filterKey]: !prev[filterKey] }));
+        setCurrentPage(1); // Resetear a la primera página
+    }, []);
+    
+    const handleSortChange = useCallback((newOrder) => {
+        setSortOrder(newOrder);
+        setCurrentPage(1); // Resetear a la primera página
     }, []);
 
-    // --- MANEJADORES DE CARRITO Y FAVORITOS ---
+    const handlePageChange = useCallback((page) => {
+        setCurrentPage(page);
+    }, []);
 
-    const handleUpdateCart = useCallback((product, action, quantity = 1) => {
+    // Lógica para añadir/actualizar productos en el carrito
+    const handleUpdateCart = useCallback((product, action, quantity) => {
         setCartItems(prevItems => {
             const existingItem = prevItems.find(item => item.id === product.id);
 
-            if (action === 'ADD' || action === 'UPDATE') {
-                if (existingItem) {
-                    return prevItems.map(item =>
-                        item.id === product.id
-                            ? { ...item, quantity: (action === 'ADD' ? item.quantity + quantity : quantity) }
-                            : item
-                    );
-                } else {
-                    return [...prevItems, { ...product, quantity: quantity }];
+            if (existingItem) {
+                const newQuantity = action === 'ADD' || action === 'UPDATE' 
+                    ? existingItem.quantity + quantity 
+                    : existingItem.quantity - quantity;
+
+                if (newQuantity <= 0) {
+                    return prevItems.filter(item => item.id !== product.id);
                 }
-            } else if (action === 'REMOVE') {
-                if (existingItem) {
-                    const newQuantity = existingItem.quantity - quantity;
-                    if (newQuantity <= 0) {
-                        return prevItems.filter(item => item.id !== product.id);
-                    }
-                    return prevItems.map(item =>
-                        item.id === product.id
-                            ? { ...item, quantity: newQuantity }
-                            : item
-                    );
-                }
+                return prevItems.map(item => 
+                    item.id === product.id ? { ...item, quantity: newQuantity } : item
+                );
+            } else if (action === 'ADD' && quantity > 0) {
+                return [...prevItems, { ...product, quantity }];
             }
             return prevItems;
         });
     }, []);
-
+    
+    // Lógica para eliminar completamente del carrito (usado en el modal)
     const handleRemoveFromCartModal = useCallback((productId) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
     }, []);
 
+
+    // Lógica de Favoritos (Afecta el estado de `products`)
     const handleToggleFavorite = useCallback((productId) => {
-        setProducts(prevProducts =>
-            prevProducts.map(p =>
-                p.id === productId ? { ...p, isFavorite: !p.isFavorite } : p
-            )
-        );
+        setProducts(prevProducts => prevProducts.map(p => 
+            p.id === productId ? { ...p, isFavorite: !p.isFavorite } : p
+        ));
     }, []);
 
-    // --- PAGINACIÓN: MANEJADOR CLAVE ---
-    const handlePageChange = useCallback((page) => {
-        setCurrentPage(page);
-        // Opcional: scroll al inicio de la página
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, []);
+    // --- LÓGICA DE FILTRADO Y ORDENAMIENTO (useMemo) ---
 
-    // --- LÓGICA DE FILTRADO, BÚSQUEDA Y PAGINACIÓN ---
-    const { filteredProducts, totalPages } = useMemo(() => {
-        // 1. Aplicar Búsqueda
-        let result = products.filter(p =>
-            p.name.toLowerCase().includes(searchQuery)
+    const filteredAndSortedProducts = useMemo(() => {
+        // 1. Filtrado por Búsqueda (Search)
+        const filteredBySearch = products.filter(product => 
+            product.name.toLowerCase().includes(filters.search.toLowerCase())
         );
 
-        // 2. Aplicar Filtro de Categoría
-        if (filters.category !== 'Todos') {
-            result = result.filter(p => p.category === filters.category);
-        }
+        // 2. Filtrado por Criterios (Categoría y Checkboxes)
+        const filteredByCriteria = filteredBySearch.filter(product => {
+            const categoryMatch = filters.category === 'Todo' || product.category === filters.category;
+            const conAzucarMatch = !filters.conAzucar || product.conAzucar;
+            const sinTaccMatch = !filters.sinTacc || product.sinTacc;
+            const veganoMatch = !filters.vegano || product.vegano;
 
-        // 3. Aplicar Filtros Checkbox
-        if (filters.conAzucar) {
-            result = result.filter(p => p.conAzucar);
-        }
-        if (filters.sinTacc) {
-            result = result.filter(p => p.sinTacc);
-        }
-        if (filters.vegano) {
-            result = result.filter(p => p.vegano);
-        }
+            return categoryMatch && conAzucarMatch && sinTaccMatch && veganoMatch;
+        });
+
+        // 3. Ordenamiento
+        const sortedProducts = [...filteredByCriteria].sort((a, b) => {
+            if (sortOrder === 'price-asc') {
+                return a.price - b.price;
+            }
+            if (sortOrder === 'price-desc') {
+                return b.price - a.price;
+            }
+            return a.id - b.id; // Orden por defecto
+        });
         
-        // 4. Calcular Paginación
-        const totalItems = result.length;
-        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-        
-        // 5. Aplicar Slice para la página actual
-        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        const paginatedProducts = result.slice(startIndex, endIndex);
+        return sortedProducts;
+    }, [products, filters, sortOrder]);
 
-        return { filteredProducts: paginatedProducts, totalPages };
-    }, [products, searchQuery, filters, currentPage]);
+    // --- LÓGICA DE PAGINACIÓN (useMemo) ---
+    const totalProducts = filteredAndSortedProducts.length;
+    const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
 
-    // --- CONTADORES ---
-    const cartItemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    
+    // Productos a mostrar en la página actual
+    const finalProducts = filteredAndSortedProducts.slice(startIndex, endIndex);
+
+    // --- CONTADORES PARA BADGES ---
+    const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
     const favoriteItemCount = products.filter(p => p.isFavorite).length;
 
-
-    // --- RENDERIZADO ---
     return (
         <div className="app-container">
-            <Header onSearchChange={handleSearchChange} 
-                onToggleCart={toggleCartModal}
-                onToggleSidebar={toggleSidebar}
-                cartItemCount={cartItemCount}
-            />
+            {/* Header y Nav (Sticky) */}
+            <Header 
+                onSearchChange={handleSearchChange} 
+                onToggleCart={toggleCartModal} 
+                onToggleSidebar={toggleSidebar} 
+                cartItemCount={cartItemCount} 
+            /> 
             <Nav 
                 onToggleCart={toggleCartModal} 
                 cartItemCount={cartItemCount} 
@@ -200,34 +187,56 @@ function App() {
                 onToggleSidebar={toggleSidebar} 
             />
             
+            {/* Slider de Destacados */}
             <FeaturedSlider 
                 products={featuredProducts} 
                 onUpdateCart={handleUpdateCart} 
-            /> 
+            />
             
-            {/* PUBLICIDAD: DEJAMOS SU UBICACIÓN AQUÍ, FUERA DEL GRID, COMO LO NECESITAS */}
-            <AdSidebar />
-            
-            {/* CONTENEDOR PRINCIPAL CON EL LAYOUT DE FILTROS Y PRODUCTOS (2 COLUMNAS) */}
+            {/* ✅ CONTENEDOR PRINCIPAL: Grid de 2 COLUMNAS (Web) */}
             <div className="main-content-wrapper">
                 
-                {/* COLUMNA 1: Filtros */}
-                <FilterSidebar 
-                    filters={filters}
-                    onCategoryChange={handleCategoryChange}
-                    onCheckboxChange={handleCheckboxChange}
-                    isSidebarOpen={isSidebarOpen} 
-                    onToggleSidebar={toggleSidebar} 
-                />
+                {/* ⬅️ CLAVE 1: Nuevo contenedor para apilar Filtros y Publicidad */}
+                <div className="filter-ad-stack"> 
+                    
+                    {/* Filtros: Se apilarán primero */}
+                    <FilterSidebar 
+                        categories={allCategories} // Paso todas las categorías disponibles
+                        filters={filters}
+                        onCategoryChange={handleCategoryChange}
+                        onCheckboxChange={handleCheckboxChange}
+                        isSidebarOpen={isSidebarOpen} 
+                        onToggleSidebar={toggleSidebar} 
+                    />
+                    
+                    {/* Publicidad: Se apilará ABAJO (gracias al CSS de .filter-ad-stack) */}
+                    <AdSidebar /> 
+                </div>
                 
                 {/* COLUMNA 2: Área Principal de Productos */}
                 <main className="product-area">
+                    {/* Controles de Ordenamiento */}
+                    <div className="sort-controls">
+                        <label htmlFor="sort-select">Ordenar por:</label>
+                        <select 
+                            id="sort-select" 
+                            value={sortOrder} 
+                            onChange={(e) => handleSortChange(e.target.value)}
+                        >
+                            <option value="default">Por Defecto</option>
+                            <option value="price-asc">Precio: Menor a Mayor</option>
+                            <option value="price-desc">Precio: Mayor a Menor</option>
+                        </select>
+                    </div>
+
+                    {/* Grilla de Productos */}
                     <ProductGrid 
-                        products={filteredProducts} 
+                        products={finalProducts} // Productos paginados, filtrados y ordenados
                         onToggleFavorite={handleToggleFavorite}
                         onUpdateCart={handleUpdateCart} 
                         cartItems={cartItems} 
                     />
+                    
                     {/* Componente de paginación con props dinámicos */}
                     <Pagination 
                         currentPage={currentPage}
@@ -237,6 +246,7 @@ function App() {
                 </main>
             </div>
 
+            {/* Footer y Carrito Modal */}
             <Footer />
             
             <Carrito 
