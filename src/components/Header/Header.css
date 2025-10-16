@@ -1,5 +1,4 @@
 /* src/components/Header/Header.css */
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -8,7 +7,7 @@
   background-color: #e0f2f7;
   border-bottom: 1px solid #ccc;
   color: #333;
-  position: relative; 
+  position: relative; /* Clave para posicionar el buscador desplegable y el menú */
 }
 
 .logo-img {
@@ -22,7 +21,7 @@
   gap: 15px; 
 }
 
-.user-icon, .mobile-menu-icon {
+.user-icon, .mobile-search-icon, .mobile-menu-icon {
   font-size: 1.5rem;
   cursor: pointer;
   color: #333;
@@ -30,84 +29,171 @@
   padding: 5px;
 }
 
-.user-icon:hover {
-  color: #007bff; 
+.user-icon:hover, .mobile-search-icon:hover, .mobile-menu-icon:hover {
+  color: #007bff; /* Color de hover */
 }
 
-/* ------------------- BUSCADOR FIJO ------------------- */
+/* Ocultamos por defecto el icono de menú hamburguesa y de búsqueda móvil */
+.mobile-menu-icon,
+.mobile-search-icon {
+    display: none; 
+}
+
+/* ------------------- BUSCADOR FIJO (Desktop) ------------------- */
 .search-container.fixed-search {
-  display: flex;
+  display: none; /* Ocultar por defecto, mostrar solo en desktop */
   align-items: center;
   margin: 0 20px; 
   flex-grow: 1; 
   max-width: 400px; 
   background-color: white;
+  border-radius: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: hidden; 
 }
 
-.search-container input {
+.search-container.fixed-search input {
   border: none;
   outline: none;
-  padding: 10px 15px;
+  padding: 8px 15px;
+  width: 100%;
+  border-radius: 20px 0 0 20px;
   font-size: 1rem;
-  flex-grow: 1;
 }
 
 .search-icon-fixed {
-  background-color: #007bff; 
-  color: white;
-  padding: 10px 12px;
+  color: #007bff;
+  padding: 8px 15px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
+  border-left: 1px solid #ccc;
 }
 
-
+/* ------------------- MEDIA QUERIES (Desktop > 768px) ------------------- */
 @media (min-width: 769px) {
-
-  .mobile-menu-icon {
-    display: none;
+  /* Aseguramos que el buscador fijo esté visible en desktop */
+  .search-container.fixed-search {
+    display: flex; 
   }
 }
 
+
+/* ------------------- MEDIA QUERIES (Mobile <= 768px) ------------------- */
 @media (max-width: 768px) {
-  .social-icons,
+  .social-icons, /* No tenemos social icons en el header, pero por si acaso */
   .search-container.fixed-search {
     display: none;
   }
   
-  /*Icono de hamburguesa */
-  .mobile-menu-icon {
+  /* Mostramos íconos móviles */
+  .mobile-menu-icon,
+  .mobile-search-icon {
     display: block;
   }
-
-  /* Estilos para el menú móvil */
-  .mobile-nav {
-    display: flex;
-    flex-direction: column;
+  
+  /* ------------------- BUSCADOR DESPLEGABLE MÓVIL ------------------- */
+  .search-container-mobile {
     position: absolute;
-    top: 71px; 
+    top: 100%; 
     left: 0;
     width: 100%;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 999;
+    display: flex; 
+    background-color: #f0f0f0;
+    padding: 10px 1rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    z-index: 990;
+  }
+
+  .search-container-mobile input {
+    width: 100%;
+    padding: 8px 15px;
+    border: 1px solid #007bff;
+    border-radius: 20px; 
+    font-size: 1rem;
+    outline: none;
   }
   
-  .mobile-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  /* ------------------- MENÚ DE HAMBURGUESA MÓVIL ------------------- */
+
+  .mobile-menu-icon {
+    order: 3; /* Asegura que esté a la derecha del todo */
+  }
+
+  .mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%; /* Ocupa la mayor parte de la pantalla */
+    max-width: 300px;
+    height: 100vh;
+    background-color: white;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
   }
   
-  .mobile-nav li {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
+  .mobile-menu-close {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.1rem;
     font-weight: bold;
+    padding: 10px 20px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+
+  .mobile-nav-links {
+    list-style: none;
+    padding: 0 0 20px 0;
+    margin: 0;
+    flex-grow: 1; /* Para que ocupe el espacio */
+  }
+
+  .mobile-nav-links li {
+    padding: 12px 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1rem;
     color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .mobile-nav-links li:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-nav-links li:hover {
+    background-color: #f7f9fc;
+    color: #007bff;
+  }
+  
+  .mobile-nav-links li a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+  }
+
+  .mobile-menu-icon-link {
+    font-size: 1.2rem;
+  }
+
+  .mobile-menu-user {
+    padding: 15px 20px;
+    background-color: #e0f2f7;
+    border-top: 1px solid #ccc;
+    font-weight: bold;
+    color: #007bff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 }

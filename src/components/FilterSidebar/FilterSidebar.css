@@ -1,108 +1,143 @@
 /* src/components/FilterSidebar/FilterSidebar.css */
 
 .filter-sidebar {
-  width: 280px; 
-  padding: 10px;
+    width: 250px; 
+    padding: 15px;
+    height: fit-content;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.filter-sidebar h2 {
-  color: #333;
-  border-bottom: 2px solid #e0f2f7; 
-  padding-bottom: 5px;
-  margin-bottom: 15px;
+.filter-sidebar hr {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid #eee;
 }
 
-/* --- Botones de Categoría  --- */
+/* --- Layout de Filtros --- */
+.filter-section {
+    margin-bottom: 15px;
+}
+
+.collapse-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.toggle-icon.open {
+    transform: rotate(180deg);
+}
+
+.section-content {
+    max-height: 500px; 
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding-top: 10px;
+}
+
+.section-content.closed {
+    max-height: 0;
+    padding-top: 0;
+}
+
+
+/* --- Botones de Categoría   --- */
 .category-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .category-btn {
-  background-color: #f0f0f0;
-  color: #555;
-  border: 1px solid #ccc;
-  padding: 10px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.2s ease;
-  border-radius: 4px;
+    width: 100%;
+    padding: 10px;
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-weight: 500;
 }
 
-.category-btn.active, .category-btn:hover {
-  background-color: #e0f2f7; 
-  color: #333;
-  border-color: #007bff;
-  font-weight: bold;
+.category-btn:hover {
+    background-color: #e9ecef;
 }
 
-/* --- Collapse --- */
-.collapse-header {
-  width: 100%;
-  background-color: #555;
-  color: white;
-  padding: 10px;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 10px;
+.category-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
 }
 
-.collapse-content {
-  padding: 10px;
-  border: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 20px;
+/* --- Checkbox Filters --- */
+.checkbox-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* --- Publicidad (Ocultar en Móvil) --- */
-.ad-container {
-  width: 100%;
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
+.checkbox-item {
+    display: flex;
+    align-items: center;
 }
 
-.ad-container img {
-  width: 100%;
-  height: auto;
-  display: block;
+.checkbox-item input {
+    margin-right: 10px;
 }
 
-.ad-title {
-  text-align: center;
-  font-weight: bold;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-
-@media (max-width: 768px) {
-  .filter-sidebar {
-    width: 100%; 
-    border-bottom: 1px solid #eee;
-    margin-bottom: 10px;
-  }
-
-  .ad-container {
+/* --- Mobile Sidebar  --- */
+.close-sidebar-btn {
     display: none; 
-  }
+}
 
-  
-  .category-buttons {
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
-    gap: 10px;
-    padding-bottom: 10px;
-  }
-  
-  .category-btn {
-    flex-shrink: 0; 
-  }
+@media (max-width: 1199px) {
+    .filter-sidebar {
+       
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: 100;
+        width: 80%;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    }
+    
+    .filter-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .close-sidebar-btn {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #333;
+    }
 }

@@ -1,134 +1,311 @@
 /* src/components/ProductGrid/ProductGrid.css */
 
-/* --- Diseño de la Grilla (Web: 5 columnas) --- */
-.product-grid-container {
-  display: grid;
-  /* Requisito Web: 5 productos por fila */
-  grid-template-columns: repeat(5, 1fr); 
-  gap: 20px;
-  padding: 20px;
+.product-grid {
+    /* Por defecto, 2 columnas (para móvil) */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    padding: 10px;
 }
 
+/* --- Media Query para TABLET (A partir de 768px) --- */
+@media (min-width: 768px) {
+    .product-grid {
+        /* Tablet: 3 productos por fila */
+        grid-template-columns: repeat(3, 1fr); 
+    }
+}
+
+/* --- Media Query para WEB (A partir de 1200px, para 5 columnas) --- */
+@media (min-width: 1200px) {
+    .product-grid {
+        /* Web: 5 productos por fila */
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+
 .product-card {
-  position: relative; 
-  border: 1px solid #e0e0e0; /* Borde más suave */
-  border-radius: 12px; /* Esquinas más redondeadas */
-  overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada y suave */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: visible; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Efecto de elevación al pasar el mouse */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
-  width: 100%;
-  /* Mantenemos una altura fija para la imagen para uniformidad */
-  height: 180px; 
-  object-fit: cover;
-  display: block;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 .product-info {
-  padding: 15px;
-  text-align: center;
+    flex-grow: 1; 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-info h3 {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 5px 0;
+    min-height: 40px; 
 }
 
 .product-price {
     font-size: 1.3rem;
-    font-weight: 700;
-    color: #dc3545; /* Rojo de acento para precios */
-    margin: 5px 0 15px 0;
+    color: #007bff;
+    font-weight: bold;
+    margin: 10px 0 15px 0;
 }
 
-
-/* --- Estilos de Íconos de Favoritos --- */
-.fav-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #ccc; 
-  transition: all 0.2s;
-  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
-  padding: 8px; /* Más grande para un mejor touch target */
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 5;
+/* --- Etiquetas de Características --- */
+.product-tags {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+    flex-wrap: wrap; 
+    justify-content: center;
 }
 
-.fav-icon:hover {
-  color: #ff8c00; /* Naranja/Ámbar al pasar el mouse */
-  transform: scale(1.1);
-}
-
-.fav-icon.active {
-  color: #dc3545; /* Rojo cuando es favorito */
-}
-
-/* --- Estilos para el botón de Comprar (Buy Button) --- */
-.buy-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  margin-top: 10px;
-  
-  /* Estilos base (Comprar) */
-  background-color: #007bff; /* Azul primario */
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 8px; /* Borde redondeado */
-  font-weight: 600;
-  font-size: 1.05rem;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Sombra para profundidad */
-  transition: all 0.3s ease;
-  
-}
-
-.buy-btn:hover:not(.checked) {
-    background-color: #0056b3;
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.5);
-    transform: translateY(-2px);
-}
-
-/* Estado 'Agregado' (Checked) */
-.buy-btn.checked {
-    background-color: #28a745; /* Verde de éxito */
+.tag {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+    border-radius: 4px;
     color: white;
-    border: 1px solid #1e7e34;
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-    pointer-events: none; /* Deshabilitar clics rápidos para evitar doble-compra */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.tag.azucar { background-color: #ffc107; color: #333; }
+.tag.tacc { background-color: #28a745; }
+.tag.vegano { background-color: #6f42c1; }
+
+/* --- Control de Cantidad (Switch) --- */
+
+.add-to-cart-control {
+    width: 100%;
+    margin-top: auto; 
+}
+
+.pre-add-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Botón grande 'Agregar' */
+.add-btn.initial {
+    background-color: #7ab801;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    flex-grow: 2; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 40px; 
+}
+
+.add-btn.initial:hover {
+    background-color: #5f9000;
 }
 
 
-/* Media Query para Tablet (max-width: 1024px) */
-@media (max-width: 1024px) {
-    .product-grid-container {
-        /* Requisito Tablet: 3 productos por fila */
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 15px;
-    }
+/* --- Dropdown de Cantidad  --- */
+.quantity-dropdown-wrapper {
+    position: relative; 
+    flex-grow: 1; 
+    height: 40px;
 }
 
-/* Media Query para Celular (max-width: 600px) */
+.quantity-dropdown-button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.quantity-dropdown-button svg {
+    transition: transform 0.2s;
+}
+
+.quantity-dropdown-button.open svg {
+    transform: rotate(180deg);
+}
+
+.quantity-dropdown-menu {
+    position: absolute;
+    bottom: 100%; 
+    top: auto;
+    left: 0;
+    z-index: 30; 
+    width: 100%;
+    min-width: 120px; 
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 0 0; 
+    border-bottom: none; 
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); 
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: -1px; 
+}
+
+.dropdown-item {
+    padding: 8px 10px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-item.selected {
+    background-color: #e0f2f7;
+    font-weight: bold;
+}
+
+.quantity-dropdown-button.open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+
+/* --- Control de Cantidad cuando ya está en el carrito  --- */
+.quantity-selector.in-cart {
+    display: flex;
+    width: 100%; 
+    justify-content: space-between;
+    border: 1px solid #7ab801; 
+    border-radius: 4px;
+    overflow: hidden;
+    height: 40px; 
+}
+
+/* Botones +/- del selector */
+.quantity-selector button {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+    flex-grow: 0;
+}
+
+.quantity-selector button:hover {
+    background-color: #e0f2f7;
+}
+
+
+.quantity-selector span {
+    flex-grow: 1; 
+    text-align: center;
+    padding: 8px 5px;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    color: #7ab801; 
+}
+.quantity-selector span .check-icon {
+    margin-right: 5px;
+}
+
+
+/* --- Ícono de Favorito --- */
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.2s, background-color 0.2s; 
+    z-index: 10;
+    width: 30px; 
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.favorite-btn.active {
+    color: #7ab801; 
+}
+
+.favorite-btn:hover {
+    color: #ff4545; 
+}
+.favorite-btn.active:hover {
+    color: #5f9000; 
+}
+.favorite-btn .check-icon {
+    font-size: 1.2rem; 
+}
+
+
+/* --- RESPONSIVIDAD  --- */
+
 @media (max-width: 600px) {
-    .product-grid-container {
-        /* Requisito Celular: 2 productos por fila */
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 10px;
+  
+    .product-card {
+        flex-direction: row;
+        text-align: left;
         padding: 10px;
     }
     
-    .buy-btn {
-        padding: 10px 15px; /* Ajuste para pantalla pequeña */
-        font-size: 1rem;
+    .product-card img {
+        width: 80px;
+        height: 80px;
+        margin-right: 15px;
+    }
+    
+    .product-info {
+        justify-content: space-between;
+    }
+
+    .pre-add-controls,
+    .quantity-selector.in-cart {
+        width: 100%;
+    }
+
+    .product-tags {
+        justify-content: flex-start;
     }
 }

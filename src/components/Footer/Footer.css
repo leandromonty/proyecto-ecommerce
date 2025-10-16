@@ -3,7 +3,7 @@
 .footer-web {
   background-color: #333;
   color: white;
-  padding: 20px;
+  padding: 40px 20px 20px; /* A little more top padding */
 }
 
 .footer-main {
@@ -11,37 +11,97 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
+  max-width: 1200px; /* Added max-width for better control */
+  margin: 0 auto;
   border-bottom: 1px solid #555;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   margin-bottom: 20px;
 }
 
+/* Logo */
 .footer-logo img {
   height: 80px;
 }
 
+/* Links (2 Columns) */
 .footer-links {
   display: flex;
   gap: 50px;
 }
 
-.footer-links h3, .footer-social h3 {
+/* Contact, Social & QR */
+.footer-social-qr h3 {
   color: #e0f2f7; 
+  margin-bottom: 15px;
+}
+
+.footer-social-qr p {
+    margin: 5px 0;
+}
+
+.footer-links h3 {
+  color: #e0f2f7; 
+  margin-bottom: 15px;
 }
 
 .footer-links ul {
   list-style: none;
   padding: 0;
+  line-height: 1.8;
 }
 
 .footer-links a {
   color: white;
   text-decoration: none;
+  transition: color 0.2s;
 }
 
-.social-icons span {
-  margin-right: 10px;
-  cursor: pointer;
+.footer-links a:hover {
+  color: #007bff;
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  font-size: 1.8rem;
+}
+
+.social-icons a {
+  color: white;
+  transition: color 0.2s;
+}
+
+.social-icons a:hover {
+    color: #007bff;
+}
+
+/* QR Data Fiscal */
+.data-fiscal-qr {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.data-fiscal-qr p {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.qr-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: white;
+    margin: 0 auto;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: #333;
+    border: 1px dashed #ccc;
+    font-weight: bold;
 }
 
 .footer-copyright {
@@ -50,28 +110,55 @@
   color: #aaa;
 }
 
-/* Media query para Celular */
+
+/* ------------------- Media query para Celular (Mobile <= 768px) ------------------- */
 @media (max-width: 768px) {
   .footer-web {
-    text-align: center;
-  }
-  
-  .footer-main {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .footer-logo {
-    margin-bottom: 20px;
+    padding: 30px 15px 15px; /* Reducir padding en móvil */
   }
 
-  .footer-links, .footer-social {
-    margin-bottom: 20px;
+  .footer-main {
+    flex-direction: column;
+    text-align: center; 
+    gap: 30px;
+  }
+  
+  /* Logo Centrado */
+  .footer-logo {
+    width: 100%;
+  }
+
+  /* Contacto y Redes Centrado */
+  .footer-social-qr {
+      width: 100%;
+  }
+  
+  /* Centrar los íconos de redes sociales */
+  .social-icons {
+    justify-content: center; /* CLAVE para centrar los íconos */
     width: 100%;
   }
   
+  /* Links Columnas -> Una sola lista centrada */
   .footer-links {
     flex-direction: column;
     gap: 20px;
+    width: 100%;
+    align-items: center; /* Centra los títulos */
+  }
+
+  .footer-links .links-col {
+    width: 100%;
+  }
+
+  .footer-links ul {
+    text-align: center; /* Centra los items de la lista */
+  }
+  
+  /* QR Centrado */
+  .data-fiscal-qr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
   }
 }

@@ -1,34 +1,120 @@
 /* src/App.css */
 
-.App {
-  
-  min-height: 100vh; 
-  
+/* --- RESET BÁSICO --- */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f4f4f4; 
+    color: #333;
+    line-height: 1.6;
 }
 
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+/* --- ESTILOS GENERALES DE BOTONES Y LINKS --- */
+button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- LAYOUT PRINCIPAL Y RESPONSIVIDAD (IMPORTANTE) --- */
 
 .main-content-wrapper {
-  display: flex;
-  max-width: 1200px; 
-  margin: 0 auto;
-  padding: 20px 0;
+    /* MOBILE: Layout vertical (1 columna) */
+    display: flex;
+    flex-direction: column; 
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 10px;
+    gap: 20px;
+    flex-grow: 1; 
+}
+
+/* ⬅️ CLAVE: Contenedor para que Filtros y Publicidad se apilen verticalmente */
+.filter-ad-stack {
+    display: flex;
+    flex-direction: column; /* Esto apila FilterSidebar encima de AdSidebar */
+    gap: 20px; /* Espacio entre los filtros y el anuncio */
 }
 
 .product-area {
-  flex-grow: 1; 
-  padding-left: 20px; 
+    flex-grow: 1;
+    min-width: 0; /* Asegura que no se desborde el contenido */
 }
 
 
-@media (max-width: 768px) {
-  .main-content-wrapper {
-    flex-direction: column;
-    padding: 10px;
-  }
-  
-  .product-area {
-    padding-left: 0;
-  }
+/* --- Media Query para el Layout de 2 Columnas (Web: > 1200px) --- */
+@media (min-width: 1200px) {
+    .main-content-wrapper {
+        /* WEB: Aplicar CSS GRID para 2 COLUMNAS (Stack de Filtros/Ad | Productos) */
+        display: grid;
+        /* El sidebar (stack) tiene 250px, y el área de productos el resto (1fr) */
+        grid-template-columns: 250px 1fr; 
+        gap: 30px;
+    }
+    
+    /* En este grid de 2 columnas, .filter-ad-stack ocupa la columna 1, y 
+       .product-area ocupa la columna 2, por defecto. */
 }
 
+
+/* --- OTROS ESTILOS DE UTILIDAD --- */
+
+.no-results-message {
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 1.2rem;
+    color: #6c757d;
+    background-color: white;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* --- ESTILOS DE ORDENAMIENTO (sort-controls) --- */
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinear a la derecha */
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.sort-controls label {
+    font-weight: 600;
+    color: #333;
+}
+
+.sort-controls select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #555;
+}
+
+.sort-controls select:focus {
+    outline: 2px solid #007bff;
+    border-color: #007bff;
+}
