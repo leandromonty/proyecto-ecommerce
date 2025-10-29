@@ -28,7 +28,7 @@ const FilterSection = ({ title, children, initialOpen = true }) => {
 
 // --- COMPONENTE PRINCIPAL (FilterSidebar) ---
 const FilterSidebar = ({ 
-    filters, // { category: 'Tartas', conAzucar: false, ... }
+    filters, 
     onCategoryChange, 
     onCheckboxChange, 
     isSidebarOpen, 
@@ -50,7 +50,6 @@ const FilterSidebar = ({
                     {CATEGORY_LIST.map(category => ( 
                         <button
                             key={category}
-                            // 'filters.category' es el filtro activo, lo comparamos con el botón
                             className={`category-btn ${filters.category === category ? 'active' : ''}`}
                             onClick={() => onCategoryChange(category)}
                         >
@@ -60,7 +59,7 @@ const FilterSidebar = ({
                 </div>
             </FilterSection>
             
-            {/* Separador */}
+          
             <hr />
 
             {/* Filtro de Checkboxes */}
@@ -72,8 +71,8 @@ const FilterSidebar = ({
                                 type="checkbox"
                                 id={filterKey}
                                 name={filterKey}
-                                checked={filters[filterKey]} // Lee el valor booleano del estado 'filters'
-                                onChange={() => onCheckboxChange(filterKey)} // Envía la clave para cambiar el estado
+                                checked={filters[filterKey]} 
+                                onChange={() => onCheckboxChange(filterKey)} 
                             />
                             <label htmlFor={filterKey}>
                                 {filterKey === 'conAzucar' ? 'Con Azúcar' : 

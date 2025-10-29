@@ -8,7 +8,6 @@
 
 .product-card-detail {
     display: grid;
-    /* Layout: 2 columnas principales (imagen + info) y 1 columna de especificaciones */
     grid-template-columns: 1fr 1.5fr 0.8fr; 
     gap: 40px;
     background-color: white;
@@ -242,23 +241,22 @@
 /* -------------------- RESPONSIVIDAD MÓVIL/TABLET -------------------- */
 @media (max-width: 1024px) {
     .product-card-detail {
-        /* Tablet: 2 columnas principales (Info abajo de Imagen), Specs se oculta o va abajo */
         grid-template-columns: 1fr 1fr; 
         gap: 30px;
     }
     
     .product-image-section {
-        grid-column: 1 / 3; /* Imagen ocupa todo el ancho superior */
+        grid-column: 1 / 3;
         max-width: 400px;
         margin: 0 auto;
     }
     
     .product-info-section {
-        grid-column: 1 / 3; /* Info ocupa todo el ancho central */
+        grid-column: 1 / 3; 
     }
 
     .product-specs-sidebar {
-        grid-column: 1 / 3; /* Specs va al final y ocupa todo el ancho */
+        grid-column: 1 / 3; 
     }
 }
 
@@ -276,7 +274,7 @@
     }
     
     .purchase-controls {
-        flex-wrap: wrap; /* En móvil, los controles pueden saltar de línea */
+        flex-wrap: wrap; 
     }
     
     .quantity-selector-lg {
@@ -285,7 +283,7 @@
     }
 
     .add-to-cart-btn {
-        flex-grow: 1; /* El botón de añadir ocupa el resto del espacio */
+        flex-grow: 1; 
         width: auto;
     }
     

@@ -8,8 +8,6 @@
     border-radius: 8px;
     height: fit-content; 
     border: 1px solid #ddd;
-    
-    /* En móvil/tablet, ocupa el 100% (el único carril). */
     grid-column: 1 / -1; 
 }
 
@@ -18,8 +16,7 @@
 @media (min-width: 1200px) {
     .ad-sidebar {
         display: block; 
-        /* CLAVE: Siempre en la COLUMNA 1 para apilarse con los filtros */
-        grid-column: 1 / 2; /* FORZAMOS A LA COLUMNA IZQUIERDA */
+        grid-column: 1 / 2; 
     }
 }
 

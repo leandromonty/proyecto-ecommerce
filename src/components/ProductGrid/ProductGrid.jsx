@@ -13,7 +13,7 @@ const ProductGrid = ({ products, onToggleFavorite, onUpdateCart, cartItems, onPr
     // Estado local para controlar qué dropdown está abierto
     const [openDropdownId, setOpenDropdownId] = useState(null);
 
-    // Si no hay productos (después de filtrar)
+
     if (products.length === 0) {
         return <div className="no-results-message">No se encontraron productos que coincidan con los filtros.</div>;
     }
@@ -103,7 +103,7 @@ const ProductGrid = ({ products, onToggleFavorite, onUpdateCart, cartItems, onPr
                                     <div className="quantity-selector in-cart">
                                         <button 
                                             onClick={() => handleUpdateCartQuantity(product, -1)}
-                                            disabled={cartQuantity <= 1} // No dejar bajar de 1
+                                            disabled={cartQuantity <= 0} 
                                         >
                                             -
                                         </button>

@@ -3,7 +3,7 @@ import React from 'react';
 import './CartPage.css';
 import { FaTrashAlt, FaLock, FaCreditCard, FaShippingFast, FaMapMarkerAlt } from 'react-icons/fa';
 
-// Datos de Carrito de Mockup (Simulando que App.jsx le pasa los datos)
+
 const mockCartItems = [
     { id: 1, name: "Tarta de Frutillas Premium", price: 1500, quantity: 2, image: "https://placehold.co/100x70?text=Frutillas" },
     { id: 2, name: "Budín de Limón Glaseado", price: 850, quantity: 1, image: "https://placehold.co/100x70?text=Limon" },

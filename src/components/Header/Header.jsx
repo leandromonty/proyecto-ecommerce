@@ -3,8 +3,7 @@ import React, { useState, useCallback } from 'react';
 import './Header.css';
 import Logo from '../../assets/Logo.png'; 
 import { FaUser, FaSearch, FaShoppingCart, FaHeart, FaQuestionCircle, FaTimes, FaFilter } from 'react-icons/fa';
-// La especificación dice "con buscador", pero ya tenemos el buscador desplegable.
-// Este menú móvil será el complemento para la navegación y acciones.
+
 
 const Header = ({ 
     onSearchChange, 
