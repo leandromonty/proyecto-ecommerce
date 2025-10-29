@@ -1,7 +1,8 @@
 // src/components/FeaturedSlider/FeaturedSlider.jsx
 import React, { useState } from 'react';
 import './FeaturedSlider.css';
-import { FaShoppingCart } from 'react-icons/fa'; 
+// 🚨 Línea CORREGIDA: Incluye los íconos de carrito y las flechas de navegación
+import { FaShoppingCart, FaChevronLeft, FaChevronRight } from 'react-icons/fa'; 
 
 // Recibe onUpdateCart desde App.jsx
 const FeaturedSlider = ({ products, onUpdateCart }) => { 
@@ -55,7 +56,11 @@ const FeaturedSlider = ({ products, onUpdateCart }) => {
         <div className="slider-section">
             <h2>✨ Productos Destacados</h2>
             <div className="slider-container">
-                <button className="slider-btn prev" onClick={goToPrev}>&lt;</button>
+                
+                {/* 🚨 Botón Anterior con FaChevronLeft */}
+                <button className="slider-btn prev" onClick={goToPrev}>
+                    <FaChevronLeft />
+                </button>
                 
                 <div className="slider-item">
                     <img 
@@ -66,7 +71,9 @@ const FeaturedSlider = ({ products, onUpdateCart }) => {
                         <h3>{currentProduct.name}</h3>
                         <p className="price">${priceDisplay}</p>
                         
-                        {/* Control de Cantidad (+ / -) y Botón de Añadir */}
+                        {/* Control de Cantidad (+ / -) y Botón de Añadir 
+                            🚨 ESTA SECCIÓN MANTIENE TU ESTRUCTURA ORIGINAL
+                        */}
                         <div className="add-to-cart-control">
                             <div className="quantity-selector">
                                 <button 
@@ -92,7 +99,10 @@ const FeaturedSlider = ({ products, onUpdateCart }) => {
                     </div>
                 </div>
 
-                <button className="slider-btn next" onClick={goToNext}>&gt;</button>
+                {/* 🚨 Botón Siguiente con FaChevronRight */}
+                <button className="slider-btn next" onClick={goToNext}>
+                    <FaChevronRight />
+                </button>
             </div>
         </div>
     );

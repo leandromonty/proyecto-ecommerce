@@ -1,21 +1,25 @@
 /* src/components/FeaturedSlider/FeaturedSlider.css */
 
 .slider-section {
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f8f8f8;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 9000px;
+  margin: 50px auto;
+  padding: 30px 20px; /* Aumento del padding */
+  
+  /* 🚨 CAMBIO MODERNO: Fondo blanco semi-transparente para integrarse al body */
+  background-color: rgba(255, 255, 255, 0.9); 
+  
+  border-radius: 12px; /* Bordes más suaves */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
   text-align: center;
 }
 
 .slider-section h2 {
   color: #333;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #e0f2f7; 
+  margin-bottom: 25px; /* Más espacio */
+  border-bottom: 3px solid #007bff; /* Color más visible */
   display: inline-block;
-  padding-bottom: 5px;
+  padding-bottom: 8px;
+  font-size: 2rem;
 }
 
 .slider-container {
@@ -32,82 +36,167 @@
   justify-content: center;
   width: 100%;
   padding: 20px;
-  transition: opacity 0.5s ease;
+  transition: transform 0.8s ease-in-out; /* Animación más suave */
 }
 
 .slider-item img {
-  width: 45%;
+  width: 40%; /* Un poco más pequeña */
   height: auto;
-  border-radius: 8px;
-  margin-right: 20px;
+  object-fit: cover;
+  border-radius: 15px; /* Bordes redondeados */
+  margin-right: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .item-info {
-  width: 45%;
+  width: 50%; /* Más espacio para la info */
   text-align: left;
 }
 
 .item-info h3 {
-  color: #007bff; 
-  font-size: 1.8rem;
+  color: #333; /* Color de texto más neutral */
+  font-size: 2rem;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
 }
 
 .price {
-  font-size: 1.5rem;
-  color: green;
-  font-weight: bold;
-  margin: 10px 0;
+  /* 🚨 CAMBIO MODERNO: Precio más elegante */
+  font-size: 2.2rem; 
+  color: #e91e63; /* Un color vibrante para el precio (ej. Rosa) */
+  font-weight: 800; /* Extra bold */
+  margin: 15px 0 25px 0;
 }
 
+/* --- ESTILOS DE BOTÓN DE COMPRA --- */
 .buy-btn {
-  background-color: #e0f2f7;
-  color: #333;
-  border: 1px solid #007bff;
-  padding: 10px 20px;
+  background-color: #007bff; /* Azul fuerte */
+  color: white;
+  border: none; /* Quitamos el borde */
+  padding: 12px 25px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 30px; /* Botón píldora */
   font-weight: bold;
-  transition: background-color 0.3s;
+  font-size: 1.1rem;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .buy-btn:hover {
-  background-color: #c9e6ec;
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
+/* --- ESTILOS DE BOTONES DEL SLIDER (< y >) --- */
 .slider-btn {
-  background: rgba(0, 0, 0, 0.5);
+  /* 🚨 CAMBIO MODERNO: Botones discretos y circulares */
+  background: rgba(0, 0, 0, 0.4);
   color: white;
   border: none;
-  padding: 15px 10px;
+  border-radius: 50%; /* Circular */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
   z-index: 10;
-  font-size: 1.5rem;
-  transition: background 0.3s;
-  height: 100%;
-  position: absolute;
+  font-size: 1.2rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+.slider-btn:hover {
+  background: #007bff;
+  color: white;
 }
 
 .slider-btn.prev {
-  left: 0;
+  left: 10px; /* Separación del borde */
 }
 
 .slider-btn.next {
-  right: 0;
+  right: 10px; /* Separación del borde */
 }
+
+/* --- ESTILOS DE CONTROL DE CANTIDAD (+/-) --- */
+.add-to-cart-control {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.quantity-selector {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quantity-selector button {
+    background-color: #f8f8f8;
+    color: #333;
+    padding: 8px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.quantity-selector button:hover:not(:disabled) {
+    background-color: #e9ecef;
+}
+
+.quantity-selector span {
+    padding: 8px 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
 
 /* Adaptación a móvil */
 @media (max-width: 768px) {
   .slider-item {
     flex-direction: column; 
+    padding: 10px;
   }
 
   .slider-item img, .item-info {
     width: 100%;
     margin-right: 0;
   }
+  
+  .slider-item img {
+      height: 200px;
+  }
 
   .item-info {
     margin-top: 15px;
     text-align: center;
+  }
+  
+  .add-to-cart-control {
+      flex-direction: column;
+      gap: 15px;
+  }
+  
+  .quantity-selector {
+      width: 100%;
+      justify-content: center;
+  }
+  
+  .buy-btn {
+      width: 100%;
   }
 }

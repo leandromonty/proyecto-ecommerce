@@ -309,6 +309,7 @@ const App = () => {
                     onToggleSidebar={toggleSidebar} // Para cerrarlo en mobile
                     
                 />
+             
 
                 {/* ✅ COLUMNA 2: PRODUCTOS Y PAGINACIÓN */}
                 <main className="product-area">

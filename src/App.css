@@ -8,7 +8,15 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #f4f4f4; 
+    
+    /* 🚨 IMPLEMENTACIÓN DE LA IMAGEN DE FONDO */
+    background-image: url('./assets/Background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Mantiene el fondo fijo al hacer scroll */
+    background-repeat: no-repeat;
+    
+    background-color: #f4f4f4; /* Tu color de fondo original (fallback) */
     color: #333;
     line-height: 1.6;
 }
@@ -84,7 +92,7 @@ a {
     padding: 50px 20px;
     font-size: 1.2rem;
     color: #6c757d;
-    background-color: white;
+    background-color: white; /* YA TENÍA FONDO BLANCO */
     border-radius: 8px;
     margin-top: 20px;
 }
@@ -117,4 +125,15 @@ a {
 .sort-controls select:focus {
     outline: 2px solid #007bff;
     border-color: #007bff;
+}
+
+/* --- ESTILO PARA TARJETAS DE PRODUCTO EN GRILLA (NUEVO) --- */
+/* 🚨 Usa esta clase en tu componente ProductCard/ProductGrid */
+.product-card-base {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+    overflow: hidden;
+    /* Ajusta otros estilos si es necesario */
 }

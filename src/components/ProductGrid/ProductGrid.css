@@ -26,6 +26,7 @@
 
 
 .product-card {
+    background-color: white;
     border: 1px solid #eee;
     border-radius: 8px;
     overflow: visible; 
@@ -109,8 +110,8 @@
 
 /* Botón grande 'Agregar' */
 .add-btn.initial {
-    background-color: #7ab801;
-    color: white;
+    background-color: #e0f2f7;
+    color: #007bff;
     border: none;
     padding: 10px 15px;
     border-radius: 4px;
@@ -127,7 +128,7 @@
 }
 
 .add-btn.initial:hover {
-    background-color: #5f9000;
+    background-color: #d1e8ee;
 }
 
 
